@@ -5,7 +5,7 @@
 - 플레이어를 조작해 방어 라인으로 향해 다가오는 적들을 처리하는 간단한 디펜스 게임입니다.
 - 적을 처리할 때마다 SCORE가 올라가며, 일정 SCORE 마다 레벨업을 합니다.
 - 레벨업 시, 랜덤으로 주어지는 옵션 중 하나를 선택해 플레이어를 강화하거나 방어벽을 보수할 수 있습니다.
-
+<br>
 - This project is developed in **C#** with **.NET Framework 4.7.2**.  
 - Please note: the game may not render correctly on **Windows 11 tab-style Terminal**. Make sure to run it using the **Windows Console Host**, not Windows Terminal.  
 - The game is a simple **defense-style console game** where the player must intercept and eliminate enemies approaching the defense line.  
@@ -16,12 +16,13 @@
 - 이동 : ← ↑ ↓ → (방향키)
 - 공격 : 스페이스바
 - 스킬 : Q W E R
-- 
+<br>
 - Movement: ← ↑ ↓ → (Arrow Keys)  
 - Attack: Spacebar  
 - Skills: Q, W, E, R
-
+<br>
 
 # 프로젝트 구성
 - 개발중
 - Developing
+
