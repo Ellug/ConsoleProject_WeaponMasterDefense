@@ -21,6 +21,7 @@ namespace WeaponMasterDefense
             var intro = new Intro();
             intro.Start();
 
+            // 시작
             Start();
             while (true)
             {
@@ -36,10 +37,9 @@ namespace WeaponMasterDefense
             // 플레이어, 몬스터, 성벽체력, 스킬, 점수 등도 다 초기화
         }
 
-        //// 반복 실행 함수 (Unity의 Update와 유사)
         static void Update()
         {
-            if (watch.ElapsedMilliseconds >= 50)
+            if (watch.ElapsedMilliseconds >= 50) // 50ms 갱신 => FPS : 20 ??
             {
                 watch.Restart();
 
@@ -60,9 +60,6 @@ namespace WeaponMasterDefense
                     Console.Clear();
                     Start(); // 재시작
                 }
-
-                // 일시정지 중 나머지 업데이트 로직 실행X
-                if (InputSystem.IsPaused) return;
             }
         }
 

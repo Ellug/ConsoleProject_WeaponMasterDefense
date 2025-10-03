@@ -25,7 +25,7 @@ namespace WeaponMasterDefense
         {
             for (int y = 0; y < pattern.Length; y++)
             {
-                for (int dy = 0; dy < 2; dy++) // 세로 2배 확대
+                for (int dy = 0; dy < 2; dy++)
                 {
                     Console.SetCursorPosition(startX, startY + y * 2 + dy);
 
