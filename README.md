@@ -10,8 +10,8 @@
 - Please note: the game may not render correctly on **Windows 11 tab-style Terminal**. Make sure to run it using the **Windows Console Host**, not Windows Terminal.  
 - The game is a simple **defense-style console game** where the player must intercept and eliminate enemies approaching the defense line.  
 - Each defeated enemy increases the **SCORE**, and upon reaching certain thresholds, the player **levels up**.  
-- On level up, you can choose one of the randomly provided options to either **enhance your character** or **repair the defense wall**.  
-  
+- On level up, you can choose one of the randomly provided options to either **enhance your character** or **repair the defense wall**.
+---
 ## 기본 조작법 Basic Controls
 - 이동 : ← ↑ ↓ → (방향키)
 - 공격 : 스페이스바
@@ -20,10 +20,10 @@
 - Movement: ← ↑ ↓ → (Arrow Keys)  
 - Attack: Spacebar  
 - Skills: Q, W, E, R
-  
-
+---
 # 프로젝트 구성
 - 개발중
 - Developing
+
 
 
