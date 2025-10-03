@@ -1,8 +1,0 @@
-C:\Users\ellug\source\repos\WeaponMasterDefense\bin\Debug\WeaponMasterDefense.exe.config
-C:\Users\ellug\source\repos\WeaponMasterDefense\bin\Debug\WeaponMasterDefense.exe
-C:\Users\ellug\source\repos\WeaponMasterDefense\bin\Debug\WeaponMasterDefense.pdb
-C:\Users\ellug\source\repos\WeaponMasterDefense\obj\Debug\WeaponMasterDefense.csproj.AssemblyReference.cache
-C:\Users\ellug\source\repos\WeaponMasterDefense\obj\Debug\WeaponMasterDefense.csproj.CoreCompileInputs.cache
-C:\Users\ellug\source\repos\WeaponMasterDefense\obj\Debug\WeaponMasterDefense.exe
-C:\Users\ellug\source\repos\WeaponMasterDefense\obj\Debug\WeaponMasterDefense.pdb
-C:\Users\ellug\source\repos\WeaponMasterDefense\obj\Debug\WeaponMasterDefense.exe.config
