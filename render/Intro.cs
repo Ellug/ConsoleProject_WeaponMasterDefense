@@ -38,10 +38,11 @@ namespace WeaponMasterDefense
             Console.BackgroundColor = ConsoleColor.Black;
             Console.Clear();
 
-            DrawWord.Render("MANUAL", 140, 5, "Big", ConsoleColor.Yellow, ConsoleColor.Black);
+            DrawWord.Render("MANUAL", 140, 3, "Big", ConsoleColor.Yellow, ConsoleColor.Black);
             DrawWord.Render("MOVE : ← ↑ ↓ →", 80, 23, "Mid", ConsoleColor.White, ConsoleColor.Black);
-            DrawWord.Render("ATTACK : SPACEBAR", 80, 36, "Mid", ConsoleColor.White, ConsoleColor.Black);
-            DrawWord.Render("SKILL : Q W E R", 80, 49, "Mid", ConsoleColor.White, ConsoleColor.Black);
+            DrawWord.Render("SKILL : Q W E R", 80, 36, "Mid", ConsoleColor.White, ConsoleColor.Black);
+            DrawWord.Render("ATTACK IS AUTO", 80, 49, "Mid", ConsoleColor.White, ConsoleColor.Black);
+            DrawWord.Render("AUTOMATICALLY ATTACKS ENEMIES IN RANGE", 40, 65, "Mid", ConsoleColor.White, ConsoleColor.Black);
 
             Console.ReadKey(true);
             Console.ResetColor();
@@ -57,6 +58,7 @@ namespace WeaponMasterDefense
             DrawWord.Render("YOU ARE THE LAST WARRIOR OF THE DEFENSE LINE", 8, 3, "Mid", ConsoleColor.White, ConsoleColor.Black);
             DrawWord.Render("KILL THE ENEMIES AND HOLD THE DEFENSE LINE", 8, 16, "Mid", ConsoleColor.White, ConsoleColor.Black);
             DrawWord.Render("OTHERWISE EVERYONE WILL BE BALD", 8, 29, "Mid", ConsoleColor.White, ConsoleColor.Black);
+            DrawWord.Render("GOOD LUCK", 8, 55, "Mid", ConsoleColor.White, ConsoleColor.Black);
 
             Console.ReadKey(true);
             Console.ResetColor();

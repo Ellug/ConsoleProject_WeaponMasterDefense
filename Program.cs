@@ -6,6 +6,7 @@ namespace WeaponMasterDefense
     class Program
     {
         static Stopwatch watch = new Stopwatch();
+        static Player player;
 
         static void Main(string[] args)
         {
@@ -35,6 +36,7 @@ namespace WeaponMasterDefense
             GameRender.Init();
             UIRender.Init();
             // 플레이어, 몬스터, 성벽체력, 스킬, 점수 등도 다 초기화
+            player = new Player();
         }
 
         static void Update()
@@ -47,10 +49,11 @@ namespace WeaponMasterDefense
                 {
                     // 게임 영역 렌더링
                     GameRender.DrawField();
+                    GameRender.DrawPlayer(player);
                     UIRender.Update();
                 }
 
-                InputSystem.HandleInput();
+                InputSystem.HandleInput(player);
 
                 if (InputSystem.ShouldExit) Environment.Exit(0);
                 if (InputSystem.ShouldRestart)
