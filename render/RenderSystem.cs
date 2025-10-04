@@ -44,13 +44,13 @@ namespace WeaponMasterDefense
         }
 
 
-        public static void DrawPattern(string[] pattern, int startX, int startY, ConsoleColor color, ConsoleColor bg)
+        public static void DrawPattern(string[] pattern, int startX, int startY, ConsoleColor color, ConsoleColor bg = ConsoleColor.Black)
         {
-            for (int y = 0; y < pattern.Length; y++)
+            for (int i = 0; i < pattern.Length; i++)
             {
-                Console.SetCursorPosition(startX, startY + y);
+                Console.SetCursorPosition(startX, startY + i);
 
-                foreach (char c in pattern[y])
+                foreach (char c in pattern[i])
                 {
                     if (c == '█')
                     {

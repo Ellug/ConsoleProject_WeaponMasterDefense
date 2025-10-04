@@ -9,6 +9,8 @@ namespace WeaponMasterDefense
         private static int uiHeight;
 
         private static int lastScore = 0;
+        private static int prevHP = -1;
+        private static int prevExp = -1;
 
         public static void Init(int totalWidth = 320, int totalHeight = 85)
         {
@@ -29,24 +31,37 @@ namespace WeaponMasterDefense
             RenderSystem.Render(" E", uiStartX + 2, 44, "S", ConsoleColor.Cyan, ConsoleColor.Black);
             RenderSystem.Render(" R", uiStartX + 2, 56, "S", ConsoleColor.Cyan, ConsoleColor.Black);
 
-            // Init시 DrawScore 무조건 한번
+            // Init시 DrawScore, DrawWallHP, DrawExp 무조건 한번
             DrawScore(-1);
+            DrawWallHp(200);
+            DrawExp(200, 100000);
         }
 
-        public static void Update(int score = 0, int qLevel = 1, int wLevel = 1, int eLevel = 1, int rLevel = 1,
-                                  double qCooldown = 0, double wCooldown = 0, double eCooldown = 0, double rCooldown = 0,
-                                  double wallHpPercent = 1.0)
+        public static void Update(Player player, int score = 0)
         {
+            if (score != lastScore)
+                DrawScore(score);
 
-            if (score != lastScore) DrawScore(score);
-
+            // 스킬 4개 표시
             int barStartY = 20;
-            DrawSkill("Q", qLevel, qCooldown, barStartY);
-            DrawSkill("W", wLevel, wCooldown, barStartY + 12);
-            DrawSkill("E", eLevel, eCooldown, barStartY + 24);
-            DrawSkill("R", rLevel, rCooldown, barStartY + 36);
 
-            DrawWallHp(wallHpPercent);
+            for (int i = 0; i < player.skills.Length; i++)
+            {
+                Skill skill = player.skills[i];
+                if (skill == null) continue;
+
+                // 쿨타임 비율 계산
+                double ratio = 0;
+                if (skill.Cooldown > 0)
+                    ratio = skill.CurrentCooldown / skill.Cooldown;
+
+                // DrawSkill(key, level, ratio, y)
+                string key = ((char)('Q' + i)).ToString();
+                DrawSkill(key, skill.Level, ratio, barStartY + i * 12);
+            }
+
+            DrawWallHp(player.HP);
+            DrawExp(player.Exp, player.TargetExp);
         }
 
         private static void DrawScore(int score)
@@ -98,28 +113,55 @@ namespace WeaponMasterDefense
             Console.ResetColor();
         }
 
-        private static void DrawWallHp(double percent)
+        private static void DrawWallHp(int wallHP)
         {
+            if (prevHP == wallHP) return;
+
+            // 0~100 범위 클램프
+            if (wallHP < 0) wallHP = 0;
+            if (wallHP > 100) wallHP = 100;
+
+            double percent = wallHP / 100.0;
+            
             int barWidth = uiWidth - 4;
             int filled = (int)(barWidth * percent);
+
+            Console.BackgroundColor = ConsoleColor.Black;
+            RenderSystem.FillRect(uiStartX + 2, uiHeight - 8, barWidth, 4);
 
             ConsoleColor hpColor;
             if (percent >= 0.7) hpColor = ConsoleColor.Green;
             else if (percent >= 0.3) hpColor = ConsoleColor.Yellow;
             else hpColor = ConsoleColor.Red;
 
-            for (int row = 0; row < 3; row++)
-            {
-                Console.SetCursorPosition(uiStartX + 2, uiHeight - (4 - row));
-                for (int i = 0; i < barWidth; i++)
-                {
-                    Console.BackgroundColor = (i < filled) ? hpColor : ConsoleColor.DarkGray;
-                    Console.Write(" ");
-                }
-            }
+            Console.BackgroundColor = hpColor;
+            RenderSystem.FillRect(uiStartX + 2, uiHeight - 8, filled, 4);
 
+            prevHP = wallHP;
             Console.ResetColor();
         }
 
+        private static void DrawExp(int exp, int targetExp)
+        {
+            if (prevExp == exp) return;
+
+            // 0~100 범위 클램프
+            if (exp > targetExp) exp = targetExp;
+
+            double percent = (double)exp / targetExp;
+            
+            int barWidth = uiWidth - 4;
+            int filled = (int)(barWidth * percent);
+
+            Console.BackgroundColor = ConsoleColor.Black;
+            RenderSystem.FillRect(uiStartX + 2, uiHeight - 3, barWidth, 2);
+
+
+            Console.BackgroundColor = ConsoleColor.Blue;
+            RenderSystem.FillRect(uiStartX + 2, uiHeight - 3, filled, 2);
+
+            prevExp = exp;
+            Console.ResetColor();
+        }
     }
 }
