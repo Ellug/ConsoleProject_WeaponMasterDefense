@@ -2,21 +2,25 @@
 
 namespace WeaponMasterDefense
 {
-
-
     public class Player
     {
         public int X { get; private set; }
         public int Y { get; private set; }
         public int HP { get; private set; } // 성 체력
         public int Atk { get; private set; }
+        public int AtkSpeed { get; private set; }
+        public int AtkCount { get; private set; }
+        public int Speed { get; private set; }
+        public int Range { get; private set; }
 
         public Player()
         {
+
             HP = 100;
             Atk = 10;
+            Speed = 1;
             X = 100;
-            Y = 60;
+            Y = 65;
         }
 
         public void Attack()
@@ -32,7 +36,7 @@ namespace WeaponMasterDefense
 
         public void MoveDown()
         {
-            if (Y + PlayerArt.Height < GameRender.GameHeight - 6) Y++;
+            if (Y + PlayerRender.Height < FieldRender.GameHeight - FieldRender.wallHeight) Y++;
         }
 
         public void MoveLeft()
@@ -42,22 +46,7 @@ namespace WeaponMasterDefense
 
         public void MoveRight()
         {
-            if (X + PlayerArt.Width < GameRender.GameWidth - 1) X++;
+            if (X + PlayerRender.Width < FieldRender.GameWidth - 1) X++;
         }
-    }
-
-    public static class PlayerArt
-    {
-        public static readonly string[] Sprite = new string[]
-        {
-            "  []  ",
-            " /||\\ ",
-            "  ||  ",
-            " /  \\ ",
-            "/    \\"
-        };
-
-        public static int Width => Sprite[0].Length; // 6
-        public static int Height => Sprite.Length; // 5
     }
 }

@@ -8,7 +8,7 @@ namespace WeaponMasterDefense
         private static int uiWidth;
         private static int uiHeight;
 
-        private static string lastScoreText = "";
+        private static int lastScore = 0;
 
         public static void Init(int totalWidth = 320, int totalHeight = 85)
         {
@@ -16,36 +16,35 @@ namespace WeaponMasterDefense
             uiWidth = totalWidth - uiStartX;
             uiHeight = totalHeight;
 
-            Console.BackgroundColor = ConsoleColor.Black;
-
             // UI 전체 배경 한번만 초기화
-            for (int y = 0; y < uiHeight; y++)
-            {
-                Console.SetCursorPosition(uiStartX, y);
-                Console.Write(new string(' ', uiWidth));
-            }
-
+            Console.BackgroundColor = ConsoleColor.Black;
+            RenderSystem.FillRect(uiStartX, 0, uiWidth, uiHeight);
             Console.ResetColor();
 
-            // 고정 라벨들
-            DrawWord.Render("SCORE", uiStartX + 6, 2, "Mid", ConsoleColor.Gray, ConsoleColor.Black);
+            // 고정
+            RenderSystem.Render("SCORE", uiStartX + 6, 2, "S", ConsoleColor.Gray, ConsoleColor.Black);
 
-            DrawWord.Render(" Q", uiStartX + 2, 20, "Mid", ConsoleColor.Cyan, ConsoleColor.Black);
-            DrawWord.Render("W", uiStartX + 2, 32, "Mid", ConsoleColor.Cyan, ConsoleColor.Black);
-            DrawWord.Render(" E", uiStartX + 2, 44, "Mid", ConsoleColor.Cyan, ConsoleColor.Black);
-            DrawWord.Render(" R", uiStartX + 2, 56, "Mid", ConsoleColor.Cyan, ConsoleColor.Black);
+            RenderSystem.Render(" Q", uiStartX + 2, 20, "S", ConsoleColor.Cyan, ConsoleColor.Black);
+            RenderSystem.Render(" W", uiStartX + 2, 32, "S", ConsoleColor.Cyan, ConsoleColor.Black);
+            RenderSystem.Render(" E", uiStartX + 2, 44, "S", ConsoleColor.Cyan, ConsoleColor.Black);
+            RenderSystem.Render(" R", uiStartX + 2, 56, "S", ConsoleColor.Cyan, ConsoleColor.Black);
+
+            // Init시 DrawScore 무조건 한번
+            DrawScore(-1);
         }
 
         public static void Update(int score = 0, int qLevel = 1, int wLevel = 1, int eLevel = 1, int rLevel = 1,
                                   double qCooldown = 0, double wCooldown = 0, double eCooldown = 0, double rCooldown = 0,
                                   double wallHpPercent = 1.0)
         {
-            DrawScore(score);
 
-            DrawSkill("Q", qLevel, qCooldown, 20);
-            DrawSkill("W", wLevel, wCooldown, 32);
-            DrawSkill("E", eLevel, eCooldown, 44);
-            DrawSkill("R", rLevel, rCooldown, 56);
+            if (score != lastScore) DrawScore(score);
+
+            int barStartY = 20;
+            DrawSkill("Q", qLevel, qCooldown, barStartY);
+            DrawSkill("W", wLevel, wCooldown, barStartY + 12);
+            DrawSkill("E", eLevel, eCooldown, barStartY + 24);
+            DrawSkill("R", rLevel, rCooldown, barStartY + 36);
 
             DrawWallHp(wallHpPercent);
         }
@@ -53,39 +52,31 @@ namespace WeaponMasterDefense
         private static void DrawScore(int score)
         {
             string scoreText = score.ToString("D5");
+            lastScore = score;
 
-            if (scoreText == lastScoreText) return;
-            lastScoreText = scoreText;
+            int charWidth = AlphabetS.GetPattern('0')[0].Length;
+            int totalWidth = (charWidth + 2) * scoreText.Length;
 
-            int charWidth = AlphabetMid.GetPattern('0')[0].Length;
-            int spacing = 1;
-            int totalWidth = (charWidth + spacing) * scoreText.Length;
+            int startX = uiStartX + uiWidth - totalWidth;
 
-            int startX = uiStartX + uiWidth - totalWidth - 2;
-
-            // 점수 영역만 클리어
+            // 점수 영역 갱신
             Console.BackgroundColor = ConsoleColor.Black;
-            for (int y = 0; y < AlphabetMid.GetPattern('0').Length * 2; y++)
-            {
-                Console.SetCursorPosition(startX, 2 + y);
-                Console.Write(new string(' ', totalWidth));
-            }
-
-            DrawWord.Render(scoreText, startX, 2, "Mid", ConsoleColor.White, ConsoleColor.Black);
+            RenderSystem.FillRect(startX - 7, 2, totalWidth + 7, AlphabetS.GetPattern('0').Length);
+            RenderSystem.Render(scoreText, startX, 2, "S", ConsoleColor.White, ConsoleColor.Black);
             Console.ResetColor();
         }
 
         private static void DrawSkill(string key, int level, double cooldown, int y)
         {
             // 레벨 숫자 표시
-            DrawWord.Render(level.ToString(), uiStartX + 40, y, "Mid", ConsoleColor.White, ConsoleColor.Black);
+            RenderSystem.Render(level.ToString(), uiStartX + 30, y, "S", ConsoleColor.White, ConsoleColor.Black);
 
             // 쿨타임 게이지 (0~1 비율)
-            int barWidth = uiWidth - 55;
+            int barWidth = uiWidth - 50;
             int filled = (int)(barWidth * (1 - cooldown));
             // cooldown = 0 → 꽉 참, cooldown = 1 → 빈칸
 
-            Console.SetCursorPosition(uiStartX + 55, y + 1);
+            Console.SetCursorPosition(uiStartX + 45, y + 2);
 
             for (int i = 0; i < barWidth; i++)
             {
