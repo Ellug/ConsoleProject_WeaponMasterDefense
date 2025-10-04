@@ -11,8 +11,8 @@ namespace WeaponMasterDefense
         static Stopwatch watch = new Stopwatch();
         static Player player;
         static MonsterSpawner spawner;
-        static int score = 0;
-        static int gameLevel = 1;
+        static public int score = 0;
+        static public int gameLevel = 1;
 
         static public bool isPaused = false;
 
@@ -29,11 +29,13 @@ namespace WeaponMasterDefense
         public static void Start()
         {
             Console.Clear();
+            Bgm.Stop();
             watch.Reset();
             watch.Start();
             FieldRender.Init();
             UIRender.Init();
-            // 플레이어, 몬스터, 성벽체력, 스킬, 점수 등도 다 초기화
+            score = 0;
+            gameLevel = 1;
             player = new Player();
             spawner = new MonsterSpawner(new MonsterFactory());
             gameState = GameState.Playing;
@@ -42,7 +44,7 @@ namespace WeaponMasterDefense
         static void Update()
         {
             double ms = watch.ElapsedMilliseconds;
-            if (ms >= 20) // 20ms 갱신 => 약 50FPS?
+            if (ms >= 20) // 50ms 갱신 => 약 20FPS?
             {
                 watch.Restart();
 
@@ -73,7 +75,7 @@ namespace WeaponMasterDefense
             Console.OutputEncoding = System.Text.Encoding.UTF8;
 
             // bgm 재생
-            //Bgm.PlayBattleTheme();
+            Bgm.PlayBattleTheme();            
 
             // 인트로 화면 출력
             var intro = new IntroRender();
@@ -82,6 +84,8 @@ namespace WeaponMasterDefense
 
         static void UpdatePlaying(double deltatime)
         {
+            InputSystem.HandleInput(player);
+
             // Game Over
             if (player.HP <= 0)
             {
@@ -99,13 +103,12 @@ namespace WeaponMasterDefense
                 return;
             }
             
-            spawner.Update(deltatime);
+            spawner.Update(deltatime, player);
+            player.Update(spawner.ActiveMonsters, deltatime);
 
             player.Draw();
-            // score 여기서 정의해서 전달하는게 낫나? UI렌더에서 하는게 낫나? 고민
             UIRender.Update(player);
             player.UpdateSkills(deltatime);
-            InputSystem.HandleInput(player);
         }
 
         public static void SetPaused()
