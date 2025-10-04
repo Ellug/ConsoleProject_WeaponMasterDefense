@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace WeaponMasterDefense
 {
@@ -8,23 +9,26 @@ namespace WeaponMasterDefense
         public int Y { get; private set; }
         public int HP { get; set; }
         public int Atk { get; private set; }
-        public int AtkSpeed { get; private set; }
-        public int AtkCount { get; private set; }
+        public double AtkDelay { get; private set; }
+        private double _attackTimer = 0;
         public int Speed { get; private set; }
         public int Range { get; private set; }
         public int Exp { get; set; }
         public int TargetExp { get; set; }
+
+        // 풀 & 활성 리스트
+        private readonly BulletPool _bulletPool = new BulletPool(128, 512);
+        private readonly List<Bullet> _activeBullets = new List<Bullet>();
 
         public Skill[] skills;
 
         public Player()
         {
             HP = 100;
-            Atk = 10;
-            AtkSpeed = 1;
-            AtkCount = 1;
+            Atk = 2;
+            AtkDelay = 0.1;
             Speed = 1;
-            Range = 10;
+            Range = 30;
             X = 100;
             Y = 65;
             Exp = 0;
@@ -39,50 +43,63 @@ namespace WeaponMasterDefense
             };
         }
 
-        public void Attack()
+        public void Update(List<Monster> monsters, double deltaTime)
         {
-            Console.WriteLine("Basic Attack!");
-            // 오토 어택으로 가자
+            // 자동 공격 타이머
+            _attackTimer += deltaTime;
+
+            // 타겟 탐색 및 발사
+            Monster target = FindNearestTarget(monsters);
+            if (target != null && _attackTimer >= AtkDelay)
+            {
+                Attack(target);
+                _attackTimer = 0;
+            }
+
+            // 탄환 업데이트(비활성은 반환)
+            for (int i = _activeBullets.Count - 1; i >= 0; i--)
+            {
+                var b = _activeBullets[i];
+                b.Update(deltaTime);
+                if (!b.IsActive)
+                {
+                    _activeBullets.RemoveAt(i);
+                    _bulletPool.Return(b);
+                }
+            }
         }
 
-        public void MoveUp()
+        private Monster FindNearestTarget(List<Monster> monsters)
         {
-            int newY = Y - Speed;
-            if (newY < 0) Y = 0;
-            else Y = newY;
+            Monster nearest = null;
+            double minDist = double.MaxValue;
+
+            foreach (var m in monsters)
+            {
+                if (m._isDead) continue;
+                double dx = m.X - X;
+                double dy = m.Y - Y;
+                double dist = Math.Sqrt(dx * dx + dy * dy);
+                if (dist < Range && dist < minDist)
+                {
+                    nearest = m;
+                    minDist = dist;
+                }
+            }
+            return nearest;
         }
 
-        public void MoveDown()
+        public void Attack(Monster target)
         {
-            int maxY = FieldRender.GameHeight - FieldRender.wallHeight - Height;
-            int newY = Y + Speed;
-            if (newY > maxY) Y = maxY;
-            else Y = newY;
-        }
-
-        public void MoveLeft()
-        {
-            int newX = X - Speed;
-            if (newX < 0) X = 0;
-            else X = newX;
-        }
-
-        public void MoveRight()
-        {
-            int maxX = FieldRender.GameWidth - Width - 1;
-            int newX = X + Speed;
-            if (newX > maxX) X = maxX;
-            else X = newX;
+            var bullet = _bulletPool.Get();
+            bullet.Init(X, Y, target, Atk, 60.0); // 60칸/초 기본
+            _activeBullets.Add(bullet);
         }
 
         public void UpdateSkills(double deltaTime)
         {
-            foreach (var skill in skills)
-            {
-                skill?.UpdateCooldown(deltaTime);
-            }
+            foreach (var skill in skills) skill?.UpdateCooldown(deltaTime);
         }
-
 
         private string[] Sprite = new string[]
         {
@@ -97,25 +114,26 @@ namespace WeaponMasterDefense
         private int Width => Sprite[0].Length;
         private int Height => Sprite.Length;
 
-        private int _prevX = -1;
-        private int _prevY = -1;
+        private int _prevX = -1, _prevY = -1;
 
         public void Draw()
         {
-            // prevX,Y 초기값(-1) 아닐시 이전 위치 지우기 실행
-            if (_prevX != -1 && _prevY != -1)
-            {
-                RenderSystem.FillRect(_prevX, _prevY, Width, Height);
-            }
+            if (_prevX != -1 && _prevY != -1) RenderSystem.FillRect(_prevX, _prevY, Width, Height);
+            RenderSystem.DrawPattern(Sprite, X, Y, ConsoleColor.Green);
+            _prevX = X; _prevY = Y;
+        }
 
-            // 새 위치 그리기
-            RenderSystem.DrawPattern(Sprite, X, Y, ConsoleColor.Green, ConsoleColor.Black);
-
-            Console.ResetColor();
-
-            // 현재 위치를 다음 프레임을 위한 이전 좌표로 저장
-            _prevX = X;
-            _prevY = Y;
+        public void MoveUp() { int ny = Y - Speed; Y = (ny < 0 ? 0 : ny); }
+        public void MoveLeft() { int nx = X - Speed; X = (nx < 0 ? 0 : nx); }
+        public void MoveDown()
+        {
+            int maxY = FieldRender.GameHeight - FieldRender.wallHeight - Height;
+            int ny = Y + Speed; Y = (ny > maxY ? maxY : ny);
+        }
+        public void MoveRight()
+        {
+            int maxX = FieldRender.GameWidth - Width - 1;
+            int nx = X + Speed; X = (nx > maxX ? maxX : nx);
         }
     }
 }

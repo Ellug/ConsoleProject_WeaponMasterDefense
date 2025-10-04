@@ -9,6 +9,9 @@ namespace WeaponMasterDefense
         private readonly List<Monster> _activeMonsters;
         private readonly Random random = new Random();
 
+        public List<Monster> ActiveMonsters { get { return _activeMonsters; } }
+
+
         private double _spawnTimer = 3;
         private double _spawnDelay = 5;
 
@@ -18,7 +21,7 @@ namespace WeaponMasterDefense
             _activeMonsters = new List<Monster>();
         }
 
-        public void Update(double deltaTime)
+        public void Update(double deltaTime, Player player)
         {
             _spawnTimer += deltaTime;
 
@@ -28,7 +31,7 @@ namespace WeaponMasterDefense
                 Spawn();
             }
 
-            UpdateMonsters(deltaTime);
+            UpdateMonsters(deltaTime, player);
         }
 
         private void Spawn()
@@ -36,16 +39,18 @@ namespace WeaponMasterDefense
             int spawnX = random.Next(5, FieldRender.GameWidth - 15);
             Monster monster = _factory.CreateRandom(spawnX);
             _activeMonsters.Add(monster);
+            monster.Draw();
         }
 
-        private void UpdateMonsters(double deltaTime)
+        private void UpdateMonsters(double deltaTime, Player player)
         {
             for (int i = _activeMonsters.Count - 1; i >= 0; i--)
             {
                 Monster m = _activeMonsters[i];
 
-                if (m.IsDead)
+                if (m._isDead)
                 {
+                    player.Exp += m.ExpValue;
                     _activeMonsters.RemoveAt(i);
                     continue;
                 }

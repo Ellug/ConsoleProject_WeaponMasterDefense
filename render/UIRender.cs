@@ -26,10 +26,10 @@ namespace WeaponMasterDefense
             // 고정
             RenderSystem.Render("SCORE", uiStartX + 6, 2, "S", ConsoleColor.Gray, ConsoleColor.Black);
 
-            RenderSystem.Render(" Q", uiStartX + 2, 20, "S", ConsoleColor.Cyan, ConsoleColor.Black);
-            RenderSystem.Render(" W", uiStartX + 2, 32, "S", ConsoleColor.Cyan, ConsoleColor.Black);
-            RenderSystem.Render(" E", uiStartX + 2, 44, "S", ConsoleColor.Cyan, ConsoleColor.Black);
-            RenderSystem.Render(" R", uiStartX + 2, 56, "S", ConsoleColor.Cyan, ConsoleColor.Black);
+            RenderSystem.Render(" Q", uiStartX + 2, 13, "S", ConsoleColor.Cyan, ConsoleColor.Black);
+            RenderSystem.Render(" W", uiStartX + 2, 23, "S", ConsoleColor.Cyan, ConsoleColor.Black);
+            RenderSystem.Render(" E", uiStartX + 2, 33, "S", ConsoleColor.Cyan, ConsoleColor.Black);
+            RenderSystem.Render(" R", uiStartX + 2, 43, "S", ConsoleColor.Cyan, ConsoleColor.Black);
 
             // Init시 DrawScore, DrawWallHP, DrawExp 무조건 한번
             DrawScore(-1);
@@ -43,7 +43,7 @@ namespace WeaponMasterDefense
                 DrawScore(score);
 
             // 스킬 4개 표시
-            int barStartY = 20;
+            int barStartY = 13;
 
             for (int i = 0; i < player.skills.Length; i++)
             {
@@ -52,12 +52,10 @@ namespace WeaponMasterDefense
 
                 // 쿨타임 비율 계산
                 double ratio = 0;
-                if (skill.Cooldown > 0)
-                    ratio = skill.CurrentCooldown / skill.Cooldown;
+                if (skill.Cooldown > 0) ratio = skill.CurrentCooldown / skill.Cooldown;
 
-                // DrawSkill(key, level, ratio, y)
                 string key = ((char)('Q' + i)).ToString();
-                DrawSkill(key, skill.Level, ratio, barStartY + i * 12);
+                DrawSkill(key, skill.Level, ratio, barStartY + i * 10);
             }
 
             DrawWallHp(player.HP);
@@ -76,7 +74,7 @@ namespace WeaponMasterDefense
 
             // 점수 영역 갱신
             Console.BackgroundColor = ConsoleColor.Black;
-            RenderSystem.FillRect(startX - 7, 2, totalWidth + 7, AlphabetS.GetPattern('0').Length);
+            RenderSystem.FillRect(startX - 9, 2, totalWidth + 7, AlphabetS.GetPattern('0').Length);
             RenderSystem.Render(scoreText, startX, 2, "S", ConsoleColor.White, ConsoleColor.Black);
             Console.ResetColor();
         }
@@ -89,7 +87,6 @@ namespace WeaponMasterDefense
             // 쿨타임 게이지 (0~1 비율)
             int barWidth = uiWidth - 50;
             int filled = (int)(barWidth * (1 - cooldown));
-            // cooldown = 0 → 꽉 참, cooldown = 1 → 빈칸
 
             Console.SetCursorPosition(uiStartX + 45, y + 2);
 

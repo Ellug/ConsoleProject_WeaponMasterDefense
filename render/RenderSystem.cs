@@ -7,9 +7,7 @@ namespace WeaponMasterDefense
         // 특정 영역 채우기
         public static void FillRect(int startX, int startY, int width, int height)
         {
-            // 버퍼 초과 방지
-            int maxY = Math.Min(startY + height, Console.BufferHeight);
-            int maxX = Math.Min(startX + width, Console.BufferWidth);
+            if (startX < 0 || startY < 0 || startX + width > Console.BufferWidth || startY + height > Console.BufferHeight) return;
 
             for (int i = 0; i < height; i++)
             {

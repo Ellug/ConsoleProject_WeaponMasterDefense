@@ -13,11 +13,12 @@ namespace WeaponMasterDefense
         public int HP { get; set; }
         public int Atk { get; set; }
         public int Speed { get; set; }
+        public int ExpValue { get; set; } = 50;
 
         public int X { get; set; }
         public int Y { get; set; }
 
-        public bool IsDead => HP <= 0;
+        public bool _isDead = false;
 
         protected virtual string[][] Frames => new string[][]
         {
@@ -31,13 +32,19 @@ namespace WeaponMasterDefense
             }
         };
 
+        public int Width => Frames[0][0].Length;
+        public int Height => Frames[0].Length;
+
+        public int CenterX => X + Width / 2;
+        public int CenterY => Y + Height / 2;
+
         public int _currentFrame = 0;
         public double _moveTimer = 0;
 
 
         public virtual void Move()
         {
-            int maxY = FieldRender.GameHeight - FieldRender.wallHeight - Frames[0].Length;
+            int maxY = FieldRender.GameHeight - FieldRender.wallHeight - Height;
             int newY = Y + Speed;
             if (newY > maxY) Y = maxY;
             else Y = newY;
@@ -52,7 +59,19 @@ namespace WeaponMasterDefense
         {
             // 대미지 받는 로직 (미완
             HP -= dmg;
-            if (HP < 0) HP = 0;
+            if (HP <= 0)
+            {
+                HP = 0;
+                Dead();
+            }
+        }
+
+        public void Dead()
+        {
+            _isDead = true;
+            RenderSystem.FillRect(X, Y, Width, Height);
+            Console.ResetColor();
+            Program.score += 10;
         }
 
         public void UpdateAnimation()
@@ -67,16 +86,13 @@ namespace WeaponMasterDefense
         private int _prevX = -1;
         private int _prevY = -1;
 
-        public void Draw() // Player의 Draw랑 매우 유사한데... 인터페이스로 빼? 그냥 둬?
+        public void Draw()
         {
-            if (_prevX != -1 && _prevY != -1)
-            {
-                RenderSystem.FillRect(_prevX, _prevY, Frames[0][0].Length, Frames[0].Length);
-            }
+            if (_isDead) return;
+
+            if (_prevX != -1 && _prevY != -1) RenderSystem.FillRect(_prevX, _prevY, Width, Height);
 
             RenderSystem.DrawPattern(Frames[_currentFrame], X, Y, ConsoleColor.Red);
-
-            Console.ResetColor();
 
             _prevX = X;
             _prevY = Y;

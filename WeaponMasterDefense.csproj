@@ -48,6 +48,7 @@
     <Compile Include="Enemy\MonsterSpawner.cs" />
     <Compile Include="Enemy\Slime.cs" />
     <Compile Include="Player\Bullet.cs" />
+    <Compile Include="Player\BulletPool.cs" />
     <Compile Include="Player\Skill.cs" />
     <Compile Include="Render\GameOverRender.cs" />
     <Compile Include="Render\LevelupRender.cs" />
