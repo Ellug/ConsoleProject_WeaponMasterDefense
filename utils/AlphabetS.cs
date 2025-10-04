@@ -2,7 +2,7 @@
 
 namespace WeaponMasterDefense
 {
-    public static class AlphabetMid
+    public static class AlphabetS
     {
         #region MidPatterns
         public static readonly string[] A = new string[]

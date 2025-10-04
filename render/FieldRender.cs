@@ -2,22 +2,24 @@
 
 namespace WeaponMasterDefense
 {
-    public static class GameRender
+    public static class FieldRender
     {
         public static int GameWidth { get; private set; }
         public static int GameHeight { get; private set; }
 
         private static readonly string[] wallPattern = new string[]
         {
-            "█████     ",
-            "█████     ",
-            "██████████",
-            "██████████",
-            "██████████",
-            "██████████"
+            "█████████         ",
+            "█████████         ",
+            "█████████         ",
+            "█████████         ",
+            "██████████████████",
+            "██████████████████",
+            "██████████████████",
+            "██████████████████"
         };
 
-        private static int wallHeight;
+        public static int wallHeight;
 
         public static void Init(int width = 320, int height = 85)
         {
@@ -28,7 +30,7 @@ namespace WeaponMasterDefense
             GameHeight = height;
             wallHeight = wallPattern.Length;
 
-            // Init 시 성벽, 경계선 그리기
+            ClearField();
             DrawWall();
             DrawRightBorder();
             Console.ResetColor();
@@ -59,44 +61,15 @@ namespace WeaponMasterDefense
         private static void DrawRightBorder()
         {
             Console.BackgroundColor = ConsoleColor.White;
-            for (int y = 0; y < GameHeight; y++)
-            {
-                Console.SetCursorPosition(GameWidth - 1, y);
-                Console.Write(" ");
-            }
+            RenderSystem.FillRect(GameWidth - 1, 0, 1, GameHeight);
             Console.ResetColor();
         }
 
-        public static void DrawField()
+        public static void ClearField()
         {
             Console.BackgroundColor = ConsoleColor.Black;
-
-            for (int y = 0; y < GameHeight - wallHeight; y++)
-            {
-                Console.SetCursorPosition(0, y);
-                Console.Write(new string(' ', GameWidth));
-            }
-
-            Console.ResetColor();
-
-            DrawRightBorder();
-
+            RenderSystem.FillRect(0, 0, GameWidth, GameHeight - wallHeight);
             Console.ResetColor();
         }
-
-        public static void DrawPlayer(Player player)
-        {
-            for (int i = 0; i < PlayerArt.Height; i++)
-            {
-                Console.SetCursorPosition(player.X, player.Y + i);
-
-                string line = PlayerArt.Sprite[i];
-                Console.ForegroundColor = ConsoleColor.Green; // 색상 예시
-                Console.Write(line);
-            }
-
-            Console.ResetColor();
-        }
-
     }
 }

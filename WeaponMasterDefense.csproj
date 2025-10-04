@@ -43,22 +43,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="player\Bullet.cs" />
-    <Compile Include="sound\BeepSound.cs" />
-    <Compile Include="sound\Bgm.cs" />
-    <Compile Include="utils\AlphabetBig.cs" />
-    <Compile Include="utils\ConsoleFontManager.cs" />
-    <Compile Include="utils\ConsoleWindowManager.cs" />
-    <Compile Include="render\DrawWord.cs" />
-    <Compile Include="render\GameRender.cs" />
-    <Compile Include="player\InputSystem.cs" />
-    <Compile Include="render\Intro.cs" />
-    <Compile Include="utils\AlphabetMid.cs" />
+    <Compile Include="Player\Bullet.cs" />
+    <Compile Include="Render\GameOverRender.cs" />
+    <Compile Include="Render\LevelupRender.cs" />
+    <Compile Include="Render\PausedRender.cs" />
+    <Compile Include="Render\PlayerRender.cs" />
+    <Compile Include="Sound\BeepSound.cs" />
+    <Compile Include="Sound\Bgm.cs" />
+    <Compile Include="Utils\AlphabetM.cs" />
+    <Compile Include="Utils\ConsoleFontManager.cs" />
+    <Compile Include="Utils\ConsoleWindowManager.cs" />
+    <Compile Include="Render\RenderSystem.cs" />
+    <Compile Include="Render\FieldRender.cs" />
+    <Compile Include="Input\InputSystem.cs" />
+    <Compile Include="Render\IntroRender.cs" />
+    <Compile Include="Utils\AlphabetS.cs" />
     <Compile Include="Enemy\Monster.cs" />
-    <Compile Include="player\Player.cs" />
+    <Compile Include="Player\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="render\UIRender.cs" />
+    <Compile Include="Render\UIRender.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
