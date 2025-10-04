@@ -18,18 +18,10 @@ namespace WeaponMasterDefense
                 case ConsoleKey.UpArrow:    player.MoveUp();        break;
                 case ConsoleKey.DownArrow:  player.MoveDown();      break;
 
-                case ConsoleKey.Q:
-                    // 플레이어 스킬 사용
-                    break;
-                case ConsoleKey.W:
-                    // 플레이어 스킬 사용
-                    break;
-                case ConsoleKey.E:
-                    // 플레이어 스킬 사용
-                    break;
-                case ConsoleKey.R:
-                    // 플레이어 스킬 사용
-                    break;
+                case ConsoleKey.Q:  player.skills[0].Activate(player);  break;
+                case ConsoleKey.W:  player.skills[1].Activate(player);  break;
+                case ConsoleKey.E:  player.skills[2].Activate(player);  break;
+                case ConsoleKey.R:  player.skills[3].Activate(player);  break;
             }
         }
     }
