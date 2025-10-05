@@ -97,9 +97,9 @@ namespace WeaponMasterDefense
             while (!Console.KeyAvailable)
             {
                 if (visible)
-                    RenderSystem.Render(pressWord, pressX, pressY, "S", ConsoleColor.DarkRed);
+                    RenderSystem.TextRender(pressWord, pressX, pressY, "S", ConsoleColor.DarkRed, ConsoleColor.White);
                 else
-                    RenderSystem.Render(pressWord, pressX, pressY, "S", ConsoleColor.White);
+                    RenderSystem.TextRender(pressWord, pressX, pressY, "S", ConsoleColor.White, ConsoleColor.White);
 
                 visible = !visible;
                 Thread.Sleep(500);
@@ -116,12 +116,12 @@ namespace WeaponMasterDefense
             Console.BackgroundColor = ConsoleColor.Black;
             Console.Clear();
 
-            RenderSystem.Render("MANUAL", 130, 3, "B", ConsoleColor.Yellow, ConsoleColor.Black);
-            RenderSystem.Render("MOVE : ← ↑ ↓ →", 60, 18, "S", ConsoleColor.White, ConsoleColor.Black);
-            RenderSystem.Render("SKILL : Q W E R", 60, 27, "S", ConsoleColor.White, ConsoleColor.Black);
-            RenderSystem.Render("ATTACK IS AUTO", 60, 36, "S", ConsoleColor.White, ConsoleColor.Black);
-            RenderSystem.Render("AUTOMATICALLY ATTACKS ENEMIES IN RANGE", 25, 53, "S", ConsoleColor.White, ConsoleColor.Black);
-            RenderSystem.Render("LEVEL UP : RANDOM UPGRADE CHOICES AVAILABLE", 25, 65, "S", ConsoleColor.White, ConsoleColor.Black);
+            RenderSystem.TextRender("MANUAL", 130, 3, "B", ConsoleColor.Yellow, ConsoleColor.Black);
+            RenderSystem.TextRender("MOVE : ← ↑ ↓ →", 60, 18, "S", ConsoleColor.White, ConsoleColor.Black);
+            RenderSystem.TextRender("SKILL : Q W E R", 60, 27, "S", ConsoleColor.White, ConsoleColor.Black);
+            RenderSystem.TextRender("ATTACK IS AUTO", 60, 36, "S", ConsoleColor.White, ConsoleColor.Black);
+            RenderSystem.TextRender("AUTOMATICALLY ATTACKS ENEMIES IN RANGE", 25, 53, "S", ConsoleColor.White, ConsoleColor.Black);
+            RenderSystem.TextRender("LEVEL UP : RANDOM UPGRADE CHOICES AVAILABLE", 25, 65, "S", ConsoleColor.White, ConsoleColor.Black);
 
             Console.ReadKey(true);
             Console.ResetColor();
@@ -134,10 +134,10 @@ namespace WeaponMasterDefense
             Console.BackgroundColor = ConsoleColor.Black;
             Console.Clear();
 
-            RenderSystem.Render("YOU ARE THE LAST WARRIOR OF THE DEFENSE LINE", 8, 3, "S", ConsoleColor.White, ConsoleColor.Black);
-            RenderSystem.Render("KILL THE ENEMIES AND HOLD THE DEFENSE LINE", 8, 13, "S", ConsoleColor.White, ConsoleColor.Black);
-            RenderSystem.Render("OTHERWISE EVERYONE WILL BE BALD", 8, 23, "S", ConsoleColor.White, ConsoleColor.Black);
-            RenderSystem.Render("GOOD LUCK", 8, 43, "S", ConsoleColor.White, ConsoleColor.Black);
+            RenderSystem.TextRender("YOU ARE THE LAST WARRIOR OF THE DEFENSE LINE", 8, 3, "S", ConsoleColor.White, ConsoleColor.Black);
+            RenderSystem.TextRender("KILL THE ENEMIES AND HOLD THE DEFENSE LINE", 8, 13, "S", ConsoleColor.White, ConsoleColor.Black);
+            RenderSystem.TextRender("OTHERWISE EVERYONE WILL BE BALD", 8, 23, "S", ConsoleColor.White, ConsoleColor.Black);
+            RenderSystem.TextRender("GOOD LUCK", 8, 43, "S", ConsoleColor.White, ConsoleColor.Black);
 
             Console.ReadKey(true);
             Console.ResetColor();

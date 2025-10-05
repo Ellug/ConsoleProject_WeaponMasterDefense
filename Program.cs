@@ -28,16 +28,21 @@ namespace WeaponMasterDefense
 
         public static void Start()
         {
-            Console.Clear();
             Bgm.Stop();
+            Renderer.Init(320, 85);
+
             watch.Reset();
             watch.Start();
+
             FieldRender.Init();
             UIRender.Init();
+
             score = 0;
             gameLevel = 1;
+
             player = new Player();
             spawner = new MonsterSpawner(new MonsterFactory());
+
             gameState = GameState.Playing;
         }
 
@@ -89,7 +94,6 @@ namespace WeaponMasterDefense
             // Game Over
             if (player.HP <= 0)
             {
-                Console.Clear();
                 gameState = GameState.GameOver;
                 return;
             }
@@ -97,37 +101,46 @@ namespace WeaponMasterDefense
             // Level Up
             if (player.Exp >= player.TargetExp)
             {
-                Console.Clear();
                 player.Exp = 0;
                 gameState = GameState.LevelUp;
                 return;
             }
-            
+
             spawner.Update(deltatime, player);
             player.Update(spawner.ActiveMonsters, deltatime);
 
+            // === Frame ===
+            Renderer.BeginFrame(ConsoleColor.Black);
+            FieldRender.Draw();
+
+            // 몬스터/탄환/플레이어
+            foreach (var m in spawner.ActiveMonsters) m.Draw();
+            foreach (var b in player.ActiveBullets) b.Draw();
             player.Draw();
-            UIRender.Update(player);
             player.UpdateSkills(deltatime);
+            UIRender.Update(player, score);
+
+            Renderer.EndFrame();
+            
         }
 
         public static void SetPaused()
         {
             isPaused = true;
             gameState = GameState.Paused;
-            Console.Clear();
         }
 
         static void UpdatePaused()
         {
-            PausedRender pausedRender = new PausedRender();
+            var pausedRender = new PausedRender();
+            Renderer.BeginFrame(ConsoleColor.Black);
             pausedRender.DrawPauseMenu();
+            Renderer.EndFrame();
             pausedRender.HandleInput();
         }
         static public void ResumeGame()
         {
             isPaused = false;
-            Console.Clear();
             FieldRender.Init();
             UIRender.Init();
             gameState = GameState.Playing;
@@ -140,15 +153,19 @@ namespace WeaponMasterDefense
 
         static void UpdateLevelUp()
         {
-            LevelUpRender lvUp = new LevelUpRender();
+            var lvUp = new LevelUpRender();
+            Renderer.BeginFrame(ConsoleColor.Black);
             lvUp.DrawLevelUpMenu();
+            Renderer.EndFrame();
             lvUp.HandleInput();
         }
 
         static void UpdateGameOver()
         {
-            GameOverRender gameOver = new GameOverRender();
+            var gameOver = new GameOverRender();
+            Renderer.BeginFrame(ConsoleColor.Black);
             gameOver.DrawPauseMenu();
+            Renderer.EndFrame();
             gameOver.HandleInput();
         }
     }

@@ -19,6 +19,7 @@ namespace WeaponMasterDefense
         // 풀 & 활성 리스트
         private readonly BulletPool _bulletPool = new BulletPool(128, 512);
         private readonly List<Bullet> _activeBullets = new List<Bullet>();
+        public IReadOnlyList<Bullet> ActiveBullets => _activeBullets;
 
         public Skill[] skills;
 
@@ -114,13 +115,9 @@ namespace WeaponMasterDefense
         private int Width => Sprite[0].Length;
         private int Height => Sprite.Length;
 
-        private int _prevX = -1, _prevY = -1;
-
         public void Draw()
         {
-            if (_prevX != -1 && _prevY != -1) RenderSystem.FillRect(_prevX, _prevY, Width, Height);
             RenderSystem.DrawPattern(Sprite, X, Y, ConsoleColor.Green);
-            _prevX = X; _prevY = Y;
         }
 
         public void MoveUp() { int ny = Y - Speed; Y = (ny < 0 ? 0 : ny); }

@@ -43,16 +43,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enemy\Bat.cs" />
+    <Compile Include="Enemy\Monsters\Bat.cs" />
     <Compile Include="Enemy\MonsterFactory.cs" />
     <Compile Include="Enemy\MonsterSpawner.cs" />
-    <Compile Include="Enemy\Slime.cs" />
+    <Compile Include="Enemy\Monsters\Slime.cs" />
     <Compile Include="Player\Bullet.cs" />
     <Compile Include="Player\BulletPool.cs" />
     <Compile Include="Player\Skill.cs" />
     <Compile Include="Render\GameOverRender.cs" />
     <Compile Include="Render\LevelupRender.cs" />
     <Compile Include="Render\PausedRender.cs" />
+    <Compile Include="Render\RenderBuffer.cs" />
+    <Compile Include="Render\Renderer.cs" />
     <Compile Include="Sound\BeepSound.cs" />
     <Compile Include="Sound\Bgm.cs" />
     <Compile Include="Utils\AlphabetM.cs" />

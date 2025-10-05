@@ -5,16 +5,13 @@ namespace WeaponMasterDefense
     public class Bullet
     {
         public bool IsActive { get; private set; }
-
         private double _x, _y;
-        private int _prevX = -1, _prevY = -1;
 
         // 고정된 진행 방향(발사 시 계산)
         private double _dirX, _dirY;
 
         private Monster _target;
         private int _damage;
-
         private double _speed;
 
         public Bullet()
@@ -28,14 +25,12 @@ namespace WeaponMasterDefense
 
             _x = startX;
             _y = startY;
-            _prevX = -1;
-            _prevY = -1;
 
             _target = target;
             _damage = damage;
             _speed = speed;
 
-            // 발사 순간 타겟 중심을 조준하여 "방향"만 고정(호밍 X)
+            // 발사 순간 타겟 중심을 조준하여 방향만 고정
             double tx = target?.CenterX ?? startX;
             double ty = target?.CenterY ?? startY - 1;
 
@@ -50,8 +45,11 @@ namespace WeaponMasterDefense
         {
             if (!IsActive) return;
 
-            // 화면 밖으로 나가면 제거
-            if (_x < 0 || _y < 0 || _x > FieldRender.GameWidth || _y > FieldRender.GameHeight)
+            int x = (int)Math.Round(_x);
+            int y = (int)Math.Round(_y);
+
+            // 플레이 구역 검사, UI 침범/벽 아래 진입 차단
+            if (x < FieldRender.PlayLeft || x > FieldRender.PlayRight || y < FieldRender.PlayTop || y > FieldRender.PlayBottom)
             {
                 Deactivate();
                 return;
@@ -73,35 +71,19 @@ namespace WeaponMasterDefense
                     return;
                 }
             }
-
-            Draw();
         }
 
-        private void Draw()
+        public void Draw()
         {
             int x = (int)Math.Round(_x);
             int y = (int)Math.Round(_y);
 
-            if (x == _prevX && y == _prevY) return;
-
-            if (_prevX != -1 && _prevY != -1) RenderSystem.FillRect(_prevX, _prevY, 1, 1);
-
-            Console.BackgroundColor = ConsoleColor.Yellow;
-            RenderSystem.FillRect(x, y, 1, 1);
-            Console.ResetColor();
-
-            _prevX = x;
-            _prevY = y;
+            if (x < FieldRender.PlayLeft || x > FieldRender.PlayRight || y < FieldRender.PlayTop || y > FieldRender.PlayBottom) return;
+            RenderSystem.FillRectChar(x, y, 1, 1, '█', ConsoleColor.Yellow);
         }
 
         private void Deactivate()
         {
-            if (_prevX != -1 && _prevY != -1)
-            {
-                Console.BackgroundColor = ConsoleColor.Black;
-                RenderSystem.FillRect(_prevX, _prevY, 1, 1);
-                Console.ResetColor();
-            }
             IsActive = false;
             _target = null;
         }
@@ -110,7 +92,6 @@ namespace WeaponMasterDefense
         {
             IsActive = false;
             _target = null;
-            _prevX = _prevY = -1;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace WeaponMasterDefense
         public int HP { get; set; }
         public int Atk { get; set; }
         public int Speed { get; set; }
-        public int ExpValue { get; set; } = 50;
+        public int ExpValue { get; set; } = 10;
 
         public int X { get; set; }
         public int Y { get; set; }
@@ -57,7 +57,6 @@ namespace WeaponMasterDefense
 
         public void GetDamaged(int dmg)
         {
-            // 대미지 받는 로직 (미완
             HP -= dmg;
             if (HP <= 0)
             {
@@ -69,7 +68,6 @@ namespace WeaponMasterDefense
         public void Dead()
         {
             _isDead = true;
-            RenderSystem.FillRect(X, Y, Width, Height);
             Console.ResetColor();
             Program.score += 10;
         }
@@ -83,19 +81,10 @@ namespace WeaponMasterDefense
             }
         }
 
-        private int _prevX = -1;
-        private int _prevY = -1;
-
         public void Draw()
         {
             if (_isDead) return;
-
-            if (_prevX != -1 && _prevY != -1) RenderSystem.FillRect(_prevX, _prevY, Width, Height);
-
             RenderSystem.DrawPattern(Frames[_currentFrame], X, Y, ConsoleColor.Red);
-
-            _prevX = X;
-            _prevY = Y;
         }
     }
 }

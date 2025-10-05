@@ -21,55 +21,34 @@ namespace WeaponMasterDefense
 
         public static int wallHeight;
 
+        // 플레이 구역 경계
+        public static int PlayLeft => 0;
+        public static int PlayTop => 0;
+        public static int PlayRight => GameWidth - 2;           // GameWidth-1 은 우측 경계선 열
+        public static int WallTop => GameHeight - wallHeight;   // 벽 시작 Y
+        public static int PlayBottom => WallTop - 1;            // 벽 바로 위까지
+
         public static void Init(int width = 320, int height = 85)
         {
-            Console.Clear();
-            Console.BackgroundColor = ConsoleColor.Black;
-
             GameWidth = width * 2 / 3;
             GameHeight = height;
             wallHeight = wallPattern.Length;
-
-            ClearField();
-            DrawWall();
-            DrawRightBorder();
-            Console.ResetColor();
-        }
-        
-        private static void DrawWall()
-        {
-            for (int i = 0; i < wallPattern.Length; i++)
-            {
-                Console.SetCursorPosition(0, GameHeight - wallPattern.Length + i);
-
-                int written = 0;
-                while (written < GameWidth)
-                {
-                    foreach (char c in wallPattern[i])
-                    {
-                        if (written >= GameWidth) break;
-
-                        Console.BackgroundColor = (c == '█') ? ConsoleColor.White : ConsoleColor.Black;
-                        Console.Write(" ");
-                        written++;
-                    }
-                }
-            }
-            Console.ResetColor();
         }
 
-        private static void DrawRightBorder()
-        {
-            Console.BackgroundColor = ConsoleColor.White;
-            RenderSystem.FillRect(GameWidth - 1, 0, 1, GameHeight);
-            Console.ResetColor();
-        }
+        public static void Draw()
+        {            
+            // 필드 영역 클리어 (우측 경계선 제외, 하단 벽 위까지만)
+            RenderSystem.FillRectChar(PlayLeft, PlayTop, (PlayRight - PlayLeft + 1), (PlayBottom - PlayTop + 1), ' ', ConsoleColor.Black);
 
-        public static void ClearField()
-        {
-            Console.BackgroundColor = ConsoleColor.Black;
-            RenderSystem.FillRect(0, 0, GameWidth, GameHeight - wallHeight);
-            Console.ResetColor();
+            // 성벽
+            int wallTop = WallTop;
+            int tileW = wallPattern[0].Length;
+            int maxStartX = PlayRight - tileW + 1;
+            for (int x = PlayLeft; x <= maxStartX; x += tileW)
+            RenderSystem.DrawPattern(wallPattern, x, wallTop, ConsoleColor.White, ConsoleColor.Black);
+
+            // 우측 경계선
+            RenderSystem.FillRectChar(GameWidth - 1, 0, 1, GameHeight, '█', ConsoleColor.White);
         }
     }
 }

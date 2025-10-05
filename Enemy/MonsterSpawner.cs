@@ -11,7 +11,6 @@ namespace WeaponMasterDefense
 
         public List<Monster> ActiveMonsters { get { return _activeMonsters; } }
 
-
         private double _spawnTimer = 3;
         private double _spawnDelay = 5;
 

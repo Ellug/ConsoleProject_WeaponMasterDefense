@@ -20,11 +20,11 @@ namespace WeaponMasterDefense
 
         public void DrawPauseMenu()
         {            
-            RenderSystem.Render("PAUSE", 120, 5, "M", ConsoleColor.Yellow, ConsoleColor.Black);
+            RenderSystem.TextRender("PAUSE", 120, 5, "M", ConsoleColor.Yellow, ConsoleColor.Black);
 
-            RenderSystem.Render("PRESS ESC TO RESUME", 90, 25, "S", ConsoleColor.White, ConsoleColor.Black);
-            RenderSystem.Render("PRESS 1 TO RESTART", 90, 40, "S", ConsoleColor.White, ConsoleColor.Black);
-            RenderSystem.Render("PRESS 2 TO EXIT", 90, 55, "S", ConsoleColor.White, ConsoleColor.Black);
+            RenderSystem.TextRender("PRESS ESC TO RESUME", 90, 25, "S", ConsoleColor.White, ConsoleColor.Black);
+            RenderSystem.TextRender("PRESS 1 TO RESTART", 90, 40, "S", ConsoleColor.White, ConsoleColor.Black);
+            RenderSystem.TextRender("PRESS 2 TO EXIT", 90, 55, "S", ConsoleColor.White, ConsoleColor.Black);
         }
     }
 }
