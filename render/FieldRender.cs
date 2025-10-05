@@ -44,8 +44,18 @@ namespace WeaponMasterDefense
             int wallTop = WallTop;
             int tileW = wallPattern[0].Length;
             int maxStartX = PlayRight - tileW + 1;
-            for (int x = PlayLeft; x <= maxStartX; x += tileW)
-            RenderSystem.DrawPattern(wallPattern, x, wallTop, ConsoleColor.White, ConsoleColor.Black);
+
+            for (int x = PlayLeft; x <= maxStartX; x += tileW) RenderSystem.DrawPattern(wallPattern, x, wallTop, ConsoleColor.White, ConsoleColor.Black);
+            
+            int remainder = (PlayRight + 1) % tileW;
+            if (remainder > 0)
+            {
+                string[] cropped = new string[wallPattern.Length];
+                for (int i = 0; i < wallPattern.Length; i++) cropped[i] = wallPattern[i].Substring(0, remainder);
+
+                int cropStartX = PlayRight + 1 - remainder;
+                RenderSystem.DrawPattern(cropped, cropStartX, wallTop, ConsoleColor.White, ConsoleColor.Black);
+            }
 
             // 우측 경계선
             RenderSystem.FillRectChar(GameWidth - 1, 0, 1, GameHeight, '█', ConsoleColor.White);

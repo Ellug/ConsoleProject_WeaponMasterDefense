@@ -64,7 +64,7 @@ namespace WeaponMasterDefense
             {
                 double dx = _target.CenterX - _x;
                 double dy = _target.CenterY - _y;
-                if ((dx * dx + dy * dy) <= 3)
+                if ((dx * dx + dy * dy) <= 3.5)
                 {
                     _target.GetDamaged(_damage);
                     Deactivate();

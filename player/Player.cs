@@ -29,7 +29,7 @@ namespace WeaponMasterDefense
             Atk = 2;
             AtkDelay = 0.1;
             Speed = 1;
-            Range = 30;
+            Range = 40;
             X = 100;
             Y = 65;
             Exp = 0;
