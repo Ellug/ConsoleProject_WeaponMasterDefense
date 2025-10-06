@@ -4,7 +4,7 @@ namespace WeaponMasterDefense
 {
     public enum MonsterTags
     {
-        Slime, Bat, Count
+        Slime, Bat, Golem, Count, KingSlime = 101, KingBat, KingGolem
     }
 
     public abstract class Monster
@@ -13,12 +13,14 @@ namespace WeaponMasterDefense
         public int HP { get; set; }
         public int Atk { get; set; }
         public int Speed { get; set; }
-        public int ExpValue { get; set; } = 10;
+        public int Range { get; set; } = 0;
+        public int ExpValue { get; set; } = 100;
 
         public int X { get; set; }
         public int Y { get; set; }
 
         public bool _isDead = false;
+        public bool _isAttable => (Y + Height >= FieldRender.GameHeight - FieldRender.wallHeight - Range);
 
         protected virtual string[][] Frames => new string[][]
         {
@@ -32,15 +34,14 @@ namespace WeaponMasterDefense
             }
         };
 
-        public int Width => Frames[0][0].Length;
-        public int Height => Frames[0].Length;
+        public int Width { get; set; }
+        public int Height { get; set; }
 
         public int CenterX => X + Width / 2;
         public int CenterY => Y + Height / 2;
 
         public int _currentFrame = 0;
         public double _moveTimer = 0;
-
 
         public virtual void Move()
         {
@@ -50,9 +51,11 @@ namespace WeaponMasterDefense
             else Y = newY;
         }                
 
-        public virtual void Attack()
+        public virtual void Attack(Player player)
         {
-            // 성벽이 사거리 내라면 공격
+            if (player == null || _isDead) return;
+            player.HP -= Atk;
+            if (player.HP < 0) player.HP = 0;
         }
 
         public void GetDamaged(int dmg)

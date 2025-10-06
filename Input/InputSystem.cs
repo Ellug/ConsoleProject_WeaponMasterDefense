@@ -22,6 +22,8 @@ namespace WeaponMasterDefense
                 case ConsoleKey.W:  player.skills[1].Activate(player);  break;
                 case ConsoleKey.E:  player.skills[2].Activate(player);  break;
                 case ConsoleKey.R:  player.skills[3].Activate(player);  break;
+                case ConsoleKey.T:  player.UpdateSkills(20000);  break;
+                case ConsoleKey.Y:  player.Exp += 100;  break;
             }
         }
     }

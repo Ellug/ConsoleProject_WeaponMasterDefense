@@ -20,20 +20,22 @@ namespace WeaponMasterDefense
         private readonly BulletPool _bulletPool = new BulletPool(128, 512);
         private readonly List<Bullet> _activeBullets = new List<Bullet>();
         public IReadOnlyList<Bullet> ActiveBullets => _activeBullets;
+        public BulletPool ActiveBulletsPool => _bulletPool;
+        public void RegisterBullet(Bullet bullet) => _activeBullets.Add(bullet);
 
         public Skill[] skills;
-
+        
         public Player()
         {
             HP = 100;
-            Atk = 2;
-            AtkDelay = 0.1;
+            Atk = 3;
+            AtkDelay = 1;
             Speed = 1;
-            Range = 40;
+            Range = 20;
             X = 100;
             Y = 65;
             Exp = 0;
-            TargetExp = 100;
+            TargetExp = 40;
 
             skills = new Skill[4]
             {
@@ -51,21 +53,33 @@ namespace WeaponMasterDefense
 
             // 타겟 탐색 및 발사
             Monster target = FindNearestTarget(monsters);
-            if (target != null && _attackTimer >= AtkDelay)
+            if (_isAsuraMode)
             {
-                Attack(target);
-                _attackTimer = 0;
+                if (target != null && _attackTimer >= 0.05)
+                {
+                    Attack(target);
+                    Attack(target);
+                    _attackTimer = 0;
+                }
+            }
+            else
+            {
+                if (target != null && _attackTimer >= AtkDelay)
+                {
+                    Attack(target);
+                    _attackTimer = 0;
+                }
             }
 
             // 탄환 업데이트(비활성은 반환)
             for (int i = _activeBullets.Count - 1; i >= 0; i--)
             {
-                var b = _activeBullets[i];
-                b.Update(deltaTime);
-                if (!b.IsActive)
+                var bullet = _activeBullets[i];
+                bullet.Update(deltaTime, monsters);
+                if (!bullet.IsActive)
                 {
                     _activeBullets.RemoveAt(i);
-                    _bulletPool.Return(b);
+                    _bulletPool.Return(bullet);
                 }
             }
         }
@@ -75,16 +89,27 @@ namespace WeaponMasterDefense
             Monster nearest = null;
             double minDist = double.MaxValue;
 
-            foreach (var m in monsters)
+            foreach (var mon in monsters)
             {
-                if (m._isDead) continue;
-                double dx = m.X - X;
-                double dy = m.Y - Y;
+                if (mon._isDead) continue;
+                double dx = mon.X - X;
+                double dy = mon.Y - Y;
                 double dist = Math.Sqrt(dx * dx + dy * dy);
-                if (dist < Range && dist < minDist)
+                if (_isAsuraMode)
                 {
-                    nearest = m;
-                    minDist = dist;
+                    if (dist < 240 && dist < minDist)
+                    {
+                        nearest = mon;
+                        minDist = dist;
+                    }
+                }
+                else
+                {
+                    if (dist < Range && dist < minDist)
+                    {
+                        nearest = mon;
+                        minDist = dist;
+                    }
                 }
             }
             return nearest;
@@ -93,13 +118,22 @@ namespace WeaponMasterDefense
         public void Attack(Monster target)
         {
             var bullet = _bulletPool.Get();
-            bullet.Init(X, Y, target, Atk, 60.0); // 60칸/초 기본
+            bullet.Init(X, Y, target, Atk, 80.0);
             _activeBullets.Add(bullet);
         }
 
         public void UpdateSkills(double deltaTime)
         {
-            foreach (var skill in skills) skill?.UpdateCooldown(deltaTime);
+            if (_isAsuraMode)
+            {
+                _asuraRemain -= deltaTime;
+                if (_asuraRemain <= 0) EndAsura();
+                for (int i = 0; i < 3; i++)
+                {
+                    skills[i]?.UpdateCooldown(100000);
+                }
+            }
+            else foreach (var skill in skills) skill?.UpdateCooldown(deltaTime);
         }
 
         private string[] Sprite = new string[]
@@ -112,12 +146,23 @@ namespace WeaponMasterDefense
             " █    █ "
         };
 
+        private string[] AsuraSprite = new string[]
+        {
+            "  ▒██▒  ",
+            "▒██████▒",
+            "█  ██  █",
+            " ▒█  █▒ ",
+            " █ ▒ ▒█▒",
+            "▒█▒▒▒▒█▒"
+        };
+
         private int Width => Sprite[0].Length;
         private int Height => Sprite.Length;
 
         public void Draw()
         {
-            RenderSystem.DrawPattern(Sprite, X, Y, ConsoleColor.Green);
+            if (_isAsuraMode) RenderSystem.DrawPattern(AsuraSprite, X, Y, ConsoleColor.Red);
+            else RenderSystem.DrawPattern(Sprite, X, Y, ConsoleColor.Green);
         }
 
         public void MoveUp() { int ny = Y - Speed; Y = (ny < 0 ? 0 : ny); }
@@ -131,6 +176,31 @@ namespace WeaponMasterDefense
         {
             int maxX = FieldRender.GameWidth - Width - 1;
             int nx = X + Speed; X = (nx > maxX ? maxX : nx);
+        }
+
+
+        // level up options
+        public void IncreaseAtk() => Atk += 2;
+        public void ReduceAtkDelay() => AtkDelay -= 0.2;
+        public void IncreaseSpeed() => Speed += 1;
+        public void IncreaseRange() => Range += 20;
+        public void Heal() => HP += 40;
+
+        // R스킬 아수라 모드 관련
+        private bool _isAsuraMode = false;
+        private double _asuraRemain = 0.0;
+
+        public void StartAsura(double duration)
+        {
+            if (_isAsuraMode) return;
+            _isAsuraMode = true;
+            _asuraRemain = duration;
+        }
+
+        public void EndAsura()
+        {
+            _isAsuraMode = false;
+            _asuraRemain = 0.0;
         }
     }
 }

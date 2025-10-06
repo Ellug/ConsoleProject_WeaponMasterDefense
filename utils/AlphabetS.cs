@@ -339,6 +339,14 @@ namespace WeaponMasterDefense
             "  █  ",
             "     "
         };
+        public static readonly string[] Dot = new string[]
+        {
+            "    ",
+            "    ",
+            "    ",
+            "    ",
+            " █  "
+        };
 
         public static readonly string[] ArrowUp = new string[]
         {
@@ -421,6 +429,7 @@ namespace WeaponMasterDefense
                 case '9': return Nine;
 
                 case ':': return Colon;
+                case '.': return Dot;
 
                 case '↑': return ArrowUp;
                 case '↓': return ArrowDown;

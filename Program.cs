@@ -8,12 +8,13 @@ namespace WeaponMasterDefense
     class Program
     {
         static GameState gameState;
-        static Stopwatch watch = new Stopwatch();
+        public static Stopwatch watch = new Stopwatch();
         static Player player;
-        static MonsterSpawner spawner;
+        static public MonsterSpawner spawner;
         static public int score = 0;
-        static public int gameLevel = 1;
+        static public int gameLevel = 0;
 
+        static LevelUpRender _lvUp;
         static public bool isPaused = false;
 
         static void Main(string[] args)
@@ -38,7 +39,7 @@ namespace WeaponMasterDefense
             UIRender.Init();
 
             score = 0;
-            gameLevel = 1;
+            gameLevel = 0;
 
             player = new Player();
             spawner = new MonsterSpawner(new MonsterFactory());
@@ -49,7 +50,7 @@ namespace WeaponMasterDefense
         static void Update()
         {
             double ms = watch.ElapsedMilliseconds;
-            if (ms >= 20) // 50ms 갱신 => 약 20FPS?
+            if (ms >= 20) // 20ms 갱신 => 약 50FPS?
             {
                 watch.Restart();
 
@@ -95,6 +96,10 @@ namespace WeaponMasterDefense
             if (player.HP <= 0)
             {
                 gameState = GameState.GameOver;
+                Console.Beep(BeepSound.F4, 50);
+                Console.Beep(BeepSound.E4, 50);
+                Console.Beep(BeepSound.D4, 50);
+                Console.Beep(BeepSound.C4, 50);
                 return;
             }
 
@@ -102,30 +107,37 @@ namespace WeaponMasterDefense
             if (player.Exp >= player.TargetExp)
             {
                 player.Exp = 0;
+                player.TargetExp += 10;
+                gameLevel++;
+                _lvUp = new LevelUpRender(player);
                 gameState = GameState.LevelUp;
+                Console.Beep(BeepSound.D4, 50);
+                Console.Beep(BeepSound.C4, 50);
+                Console.Beep(BeepSound.B4, 50);
                 return;
             }
 
-            spawner.Update(deltatime, player);
+            spawner.Update(deltatime, player, gameLevel);
             player.Update(spawner.ActiveMonsters, deltatime);
 
-            // === Frame ===
+            // Frame
             Renderer.BeginFrame(ConsoleColor.Black);
             FieldRender.Draw();
 
             // 몬스터/탄환/플레이어
-            foreach (var m in spawner.ActiveMonsters) m.Draw();
-            foreach (var b in player.ActiveBullets) b.Draw();
+            foreach (var mon in spawner.ActiveMonsters) mon.Draw();
+            foreach (var bul in player.ActiveBullets) bul.Draw();
             player.Draw();
             player.UpdateSkills(deltatime);
             UIRender.Update(player, score);
 
-            Renderer.EndFrame();
-            
+            Renderer.EndFrame();            
         }
 
         public static void SetPaused()
         {
+            Console.Beep(BeepSound.F4, 50);
+            Console.Beep(BeepSound.G4, 50);
             isPaused = true;
             gameState = GameState.Paused;
         }
@@ -140,6 +152,8 @@ namespace WeaponMasterDefense
         }
         static public void ResumeGame()
         {
+            Console.Beep(BeepSound.F4, 50);
+            Console.Beep(BeepSound.E4, 50);
             isPaused = false;
             FieldRender.Init();
             UIRender.Init();
@@ -148,16 +162,18 @@ namespace WeaponMasterDefense
 
         static public void ExitGame()
         {
+            Console.Beep(BeepSound.D4, 50);
+            Console.Beep(BeepSound.C4, 50);
+            Console.Beep(BeepSound.B3, 50);
             Environment.Exit(0);
         }
 
         static void UpdateLevelUp()
         {
-            var lvUp = new LevelUpRender();
             Renderer.BeginFrame(ConsoleColor.Black);
-            lvUp.DrawLevelUpMenu();
+            _lvUp?.DrawLevelUpMenu();
             Renderer.EndFrame();
-            lvUp.HandleInput();
+            _lvUp?.HandleInput();
         }
 
         static void UpdateGameOver()

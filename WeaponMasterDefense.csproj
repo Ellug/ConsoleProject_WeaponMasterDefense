@@ -46,6 +46,10 @@
     <Compile Include="Enemy\Monsters\Bat.cs" />
     <Compile Include="Enemy\MonsterFactory.cs" />
     <Compile Include="Enemy\MonsterSpawner.cs" />
+    <Compile Include="Enemy\Monsters\Golem.cs" />
+    <Compile Include="Enemy\Monsters\KingGolem.cs" />
+    <Compile Include="Enemy\Monsters\KingBat.cs" />
+    <Compile Include="Enemy\Monsters\KingSlime.cs" />
     <Compile Include="Enemy\Monsters\Slime.cs" />
     <Compile Include="Player\Bullet.cs" />
     <Compile Include="Player\BulletPool.cs" />

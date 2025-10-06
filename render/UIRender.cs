@@ -19,10 +19,10 @@ namespace WeaponMasterDefense
 
             // 고정 라벨
             RenderSystem.TextRender("SCORE", uiStartX + 6, 2, "S", ConsoleColor.Gray, ConsoleColor.Black);
-            RenderSystem.TextRender(" Q", uiStartX + 2, 20, "S", ConsoleColor.Cyan, ConsoleColor.Black);
-            RenderSystem.TextRender(" W", uiStartX + 2, 32, "S", ConsoleColor.Cyan, ConsoleColor.Black);
-            RenderSystem.TextRender(" E", uiStartX + 2, 44, "S", ConsoleColor.Cyan, ConsoleColor.Black);
-            RenderSystem.TextRender(" R", uiStartX + 2, 56, "S", ConsoleColor.Cyan, ConsoleColor.Black);
+            RenderSystem.TextRender(" Q", uiStartX + 2, 12, "S", ConsoleColor.Cyan, ConsoleColor.Black);
+            RenderSystem.TextRender(" W", uiStartX + 2, 20, "S", ConsoleColor.Cyan, ConsoleColor.Black);
+            RenderSystem.TextRender(" E", uiStartX + 2, 28, "S", ConsoleColor.Cyan, ConsoleColor.Black);
+            RenderSystem.TextRender(" R", uiStartX + 2, 36, "S", ConsoleColor.Cyan, ConsoleColor.Black);
 
             // 초기 표시
             DrawScore(-1);
@@ -33,14 +33,14 @@ namespace WeaponMasterDefense
         public static void Update(Player player, int score = 0)
         {
             RenderSystem.TextRender("SCORE", uiStartX + 6, 2, "S", ConsoleColor.Gray, ConsoleColor.Black);
-            RenderSystem.TextRender(" Q", uiStartX + 2, 20, "S", ConsoleColor.Cyan, ConsoleColor.Black);
-            RenderSystem.TextRender(" W", uiStartX + 2, 32, "S", ConsoleColor.Cyan, ConsoleColor.Black);
-            RenderSystem.TextRender(" E", uiStartX + 2, 44, "S", ConsoleColor.Cyan, ConsoleColor.Black);
-            RenderSystem.TextRender(" R", uiStartX + 2, 56, "S", ConsoleColor.Cyan, ConsoleColor.Black);
+            RenderSystem.TextRender(" Q", uiStartX + 2, 12, "S", ConsoleColor.Cyan, ConsoleColor.Black);
+            RenderSystem.TextRender(" W", uiStartX + 2, 20, "S", ConsoleColor.Cyan, ConsoleColor.Black);
+            RenderSystem.TextRender(" E", uiStartX + 2, 28, "S", ConsoleColor.Cyan, ConsoleColor.Black);
+            RenderSystem.TextRender(" R", uiStartX + 2, 36, "S", ConsoleColor.Cyan, ConsoleColor.Black);
 
             DrawScore(score);
 
-            int barStartY = 20;
+            int barStartY = 12;
             for (int i = 0; i < player.skills.Length; i++)
             {
                 Skill sk = player.skills[i];
@@ -48,10 +48,11 @@ namespace WeaponMasterDefense
 
                 double ratio = (sk.Cooldown > 0) ? (sk.CurrentCooldown / sk.Cooldown) : 0.0;
                 string key = ((char)('Q' + i)).ToString();
-                DrawSkill(key, sk.Level, ratio, barStartY + i * 12);
+                DrawSkill(key, sk.Level, ratio, barStartY + i * 8);
             }
 
             DrawWallHp(player.HP);
+            DrawStat(player);
             DrawExp(player.Exp, player.TargetExp);
         }
 
@@ -83,6 +84,16 @@ namespace WeaponMasterDefense
             // 쿨다운 중=Yellow, 완료=DarkCyan
             var barColor = (cooldown > 0) ? ConsoleColor.Yellow : ConsoleColor.DarkCyan;
             RenderSystem.FillRectChar(uiStartX + 45, y + 2, Math.Max(0, filled), 1, '█', barColor);
+        }
+
+        // Player Stat
+        private static void DrawStat(Player player)
+        {
+            int statStartY = 44;
+            RenderSystem.TextRender($"ATK : {player.Atk}", uiStartX + 8, statStartY, "S", ConsoleColor.White, ConsoleColor.Black);
+            RenderSystem.TextRender($"ATK DELAY : {player.AtkDelay}", uiStartX + 8, statStartY + 8, "S", ConsoleColor.White, ConsoleColor.Black);
+            RenderSystem.TextRender($"SPEED : {player.Speed}", uiStartX + 8, statStartY + 16, "S", ConsoleColor.White, ConsoleColor.Black);
+            RenderSystem.TextRender($"RANGE : {player.Range}", uiStartX + 8, statStartY + 24, "S", ConsoleColor.White, ConsoleColor.Black);
         }
 
         // HP바

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace WeaponMasterDefense
 {
@@ -7,10 +8,9 @@ namespace WeaponMasterDefense
         public bool IsActive { get; private set; }
         private double _x, _y;
 
-        // 고정된 진행 방향(발사 시 계산)
+        // 탄환 진행 방향(발사 시 계산)
         private double _dirX, _dirY;
 
-        private Monster _target;
         private int _damage;
         private double _speed;
 
@@ -26,7 +26,6 @@ namespace WeaponMasterDefense
             _x = startX;
             _y = startY;
 
-            _target = target;
             _damage = damage;
             _speed = speed;
 
@@ -41,7 +40,18 @@ namespace WeaponMasterDefense
             else { _dirX = dx / len; _dirY = dy / len; }
         }
 
-        public void Update(double dt)
+        public void InitFree(int startX, int startY, double dirX, double dirY, int damage, double speed)
+        {
+            IsActive = true;
+            _x = startX;
+            _y = startY;
+            _damage = damage;
+            _speed = speed;
+            _dirX = dirX;
+            _dirY = dirY;
+        }
+
+        public void Update(double dt, List<Monster> monsters)
         {
             if (!IsActive) return;
 
@@ -60,16 +70,31 @@ namespace WeaponMasterDefense
             _y += _dirY * _speed * dt;
 
             // 명중
-            if (_target != null && !_target._isDead)
+            Monster hitTarget = null;
+
+            // 모든 활성 몬스터 중 가까운 한 놈만 검사
+            double nearest = double.MaxValue;
+
+            foreach (var mon in monsters)
             {
-                double dx = _target.CenterX - _x;
-                double dy = _target.CenterY - _y;
-                if ((dx * dx + dy * dy) <= 3.5)
+                if (mon._isDead) continue;
+                double dx = mon.CenterX - _x;
+                double dy = mon.CenterY - _y;
+                double distSq = dx * dx + dy * dy;
+
+                if (distSq < 16 && distSq < nearest)
                 {
-                    _target.GetDamaged(_damage);
-                    Deactivate();
-                    return;
+                    nearest = distSq;
+                    hitTarget = mon;
                 }
+            }
+
+            // 명중 시 처리
+            if (hitTarget != null)
+            {
+                hitTarget.GetDamaged(_damage);
+                Deactivate();
+                return;
             }
         }
 
@@ -85,13 +110,11 @@ namespace WeaponMasterDefense
         private void Deactivate()
         {
             IsActive = false;
-            _target = null;
         }
 
         public void Reset()
         {
             IsActive = false;
-            _target = null;
         }
     }
 }

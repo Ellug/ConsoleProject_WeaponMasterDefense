@@ -24,9 +24,9 @@ namespace WeaponMasterDefense
         // 플레이 구역 경계
         public static int PlayLeft => 0;
         public static int PlayTop => 0;
-        public static int PlayRight => GameWidth - 2;           // GameWidth-1 은 우측 경계선 열
-        public static int WallTop => GameHeight - wallHeight;   // 벽 시작 Y
-        public static int PlayBottom => WallTop - 1;            // 벽 바로 위까지
+        public static int PlayRight => GameWidth - 2;
+        public static int WallTop => GameHeight - wallHeight;
+        public static int PlayBottom => WallTop - 1;
 
         public static void Init(int width = 320, int height = 85)
         {
@@ -45,7 +45,7 @@ namespace WeaponMasterDefense
             int tileW = wallPattern[0].Length;
             int maxStartX = PlayRight - tileW + 1;
 
-            for (int x = PlayLeft; x <= maxStartX; x += tileW) RenderSystem.DrawPattern(wallPattern, x, wallTop, ConsoleColor.White, ConsoleColor.Black);
+            for (int x = PlayLeft; x <= maxStartX; x += tileW) RenderSystem.DrawPattern(wallPattern, x, wallTop, ConsoleColor.DarkGray, ConsoleColor.Black);
             
             int remainder = (PlayRight + 1) % tileW;
             if (remainder > 0)
@@ -54,7 +54,7 @@ namespace WeaponMasterDefense
                 for (int i = 0; i < wallPattern.Length; i++) cropped[i] = wallPattern[i].Substring(0, remainder);
 
                 int cropStartX = PlayRight + 1 - remainder;
-                RenderSystem.DrawPattern(cropped, cropStartX, wallTop, ConsoleColor.White, ConsoleColor.Black);
+                RenderSystem.DrawPattern(cropped, cropStartX, wallTop, ConsoleColor.DarkGray, ConsoleColor.Black);
             }
 
             // 우측 경계선
