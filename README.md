@@ -60,4 +60,5 @@
 - Program.cs : 메인. 업데이트 담당 및 전역 함수, 전역 변수 위주.
 ---
 
-2025. 10. 07 - Last Updated
+2025-10-07 : Last Updated
+
