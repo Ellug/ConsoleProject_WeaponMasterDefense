@@ -81,7 +81,6 @@ namespace WeaponMasterDefense
                     int xx = x + c;
                     if ((uint)xx >= (uint)Width) continue;
                     char ch = row[c];
-                    // 투명 처리 원하면 if (ch==' ') continue;
                     _back[yy, xx].Ch = ch;
                     _back[yy, xx].Fg = fg;
                     _back[yy, xx].Bg = bg;

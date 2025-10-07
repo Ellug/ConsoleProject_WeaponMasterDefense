@@ -5,10 +5,11 @@
         public Bat(int spawnX, int gameLevel)
         {
             Name = "Bat";
-            HP = 10 + (gameLevel / 2);
+            HP = 30 + (gameLevel);
             Atk = 1;
             Speed = 3;
             ExpValue = 20;
+            ScoreVal = 20;
             X = spawnX;
             Y = 0;
             Width = Frames[0][0].Length;

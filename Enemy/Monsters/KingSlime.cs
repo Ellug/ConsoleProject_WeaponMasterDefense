@@ -5,10 +5,11 @@
         public KingSlime(int spawnX, int gameLevel)
         {
             Name = "King Slime";
-            HP = 2000;
+            HP = 8000;
             Atk = 10;
             Speed = 2;
             ExpValue = 200;
+            ScoreVal = 2000;
             X = spawnX;
             Y = 0;
             Width = Frames[0][0].Length;

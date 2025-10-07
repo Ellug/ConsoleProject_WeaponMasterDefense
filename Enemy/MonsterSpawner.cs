@@ -69,7 +69,7 @@ namespace WeaponMasterDefense
                 }
 
                 mon._moveTimer += deltaTime;
-                if (mon._moveTimer >= .5)
+                if (mon._moveTimer >= .3)
                 {
                     if (mon._isAttable) mon.Attack(player);
                     else mon.Move();
@@ -102,10 +102,6 @@ namespace WeaponMasterDefense
             _activeMonsters.Add(boss);
         }
 
-
-        public void ClearAll()
-        {
-            _activeMonsters.Clear();
-        }
+        public void ClearAll() => _activeMonsters.Clear();
     }
 }

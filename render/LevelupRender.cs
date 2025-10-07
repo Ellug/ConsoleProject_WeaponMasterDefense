@@ -30,12 +30,12 @@ namespace WeaponMasterDefense
 
             // 능력치
             if (_player.Atk < 99) optionList.Add(("Increase Atk", () => _player.IncreaseAtk()));
-            if (_player.Speed < 4) optionList.Add(("Increase Speed", () => _player.IncreaseSpeed()));
+            if (_player.Speed < 3) optionList.Add(("Increase Speed", () => _player.IncreaseSpeed()));
             if (_player.AtkDelay > 0.1) optionList.Add(("Reduce Atk Delay", () => _player.ReduceAtkDelay()));
             if (_player.Range < 160) optionList.Add(("Increase Atk Range", () => _player.IncreaseRange()));
 
             // HP 회복
-            if (_player.HP < 100) optionList.Add(("Repair Castle", () => _player.Heal()));
+            if (_player.HP < 190) optionList.Add(("Repair Castle", () => _player.Heal()));
 
             // 셔플 후 최대 4개 선택
             Shuffle(optionList);
@@ -70,18 +70,12 @@ namespace WeaponMasterDefense
 
         public void HandleInput()
         {
-            if (!Console.KeyAvailable) return;
-
-            var key = Console.ReadKey(true).Key;
-
             int idx = -1;
-            switch (key)
-            {
-                case ConsoleKey.D1: idx = 0; break;
-                case ConsoleKey.D2: idx = 1; break;
-                case ConsoleKey.D3: idx = 2; break;
-                case ConsoleKey.D4: idx = 3; break;
-            }
+
+            if (InputSystem.IsKeyPressed(ConsoleKey.D1) || InputSystem.IsKeyPressed(ConsoleKey.NumPad1)) idx = 0;
+            else if (InputSystem.IsKeyPressed(ConsoleKey.D2) || InputSystem.IsKeyPressed(ConsoleKey.NumPad2)) idx = 1;
+            else if (InputSystem.IsKeyPressed(ConsoleKey.D3) || InputSystem.IsKeyPressed(ConsoleKey.NumPad3)) idx = 2;
+            else if (InputSystem.IsKeyPressed(ConsoleKey.D4) || InputSystem.IsKeyPressed(ConsoleKey.NumPad4)) idx = 3;
 
             if (idx >= 0 && idx < _options.Count)
             {

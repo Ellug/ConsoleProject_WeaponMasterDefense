@@ -6,16 +6,18 @@ namespace WeaponMasterDefense
     {
         public void HandleInput()
         {
-            if (!Console.KeyAvailable) return;
-
-            var key = Console.ReadKey(true).Key;
-
-            switch (key)
+            if (InputSystem.IsKeyPressed(ConsoleKey.D1) || InputSystem.IsKeyPressed(ConsoleKey.NumPad1))
             {
-                case ConsoleKey.D1: Program.Start(); break;
-                case ConsoleKey.D2: Program.ExitGame(); break;
+                Program.Start();
+                return;
             }
-        }
+
+            if (InputSystem.IsKeyPressed(ConsoleKey.D2) || InputSystem.IsKeyPressed(ConsoleKey.NumPad2))
+            {
+                Program.ExitGame();
+                return;
+            }        }
+
 
         public void DrawPauseMenu()
         {

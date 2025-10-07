@@ -15,6 +15,7 @@ namespace WeaponMasterDefense
         public int Speed { get; set; }
         public int Range { get; set; } = 0;
         public int ExpValue { get; set; } = 100;
+        public int ScoreVal { get; protected set; } = 10;
 
         public int X { get; set; }
         public int Y { get; set; }
@@ -61,33 +62,32 @@ namespace WeaponMasterDefense
         public void GetDamaged(int dmg)
         {
             HP -= dmg;
-            if (HP <= 0)
-            {
-                HP = 0;
-                Dead();
-            }
+            if (HP <= 0) Dead();
         }
 
         public void Dead()
         {
+            HP = 0;
             _isDead = true;
-            Console.ResetColor();
-            Program.score += 10;
+            Program.score += ScoreVal;
         }
 
         public void UpdateAnimation()
         {
             _currentFrame++;
-            if (_currentFrame >= Frames.Length)
-            {
-                _currentFrame = 0;
-            }
+            if (_currentFrame >= Frames.Length) _currentFrame = 0;
         }
 
         public void Draw()
         {
             if (_isDead) return;
             RenderSystem.DrawPattern(Frames[_currentFrame], X, Y, ConsoleColor.Red);
+        }
+
+        public bool HitBox(double dx, double dy)
+        {
+            if (_isDead) return false;
+            return dx >= X && dx < (X + Width) && dy >= Y && dy < (Y + Height);
         }
     }
 }

@@ -72,20 +72,15 @@ namespace WeaponMasterDefense
             // 명중
             Monster hitTarget = null;
 
-            // 모든 활성 몬스터 중 가까운 한 놈만 검사
-            double nearest = double.MaxValue;
-
+            // 활성 몬스터의 히트박스 검사
             foreach (var mon in monsters)
             {
                 if (mon._isDead) continue;
-                double dx = mon.CenterX - _x;
-                double dy = mon.CenterY - _y;
-                double distSq = dx * dx + dy * dy;
-
-                if (distSq < 16 && distSq < nearest)
+                if (mon.HitBox(_x, _y))
                 {
-                    nearest = distSq;
-                    hitTarget = mon;
+                    mon.GetDamaged(_damage);
+                    Deactivate();
+                    return;
                 }
             }
 
@@ -107,14 +102,8 @@ namespace WeaponMasterDefense
             RenderSystem.FillRectChar(x, y, 1, 1, '█', ConsoleColor.Yellow);
         }
 
-        private void Deactivate()
-        {
-            IsActive = false;
-        }
+        private void Deactivate() => IsActive = false;
 
-        public void Reset()
-        {
-            IsActive = false;
-        }
+        public void Reset() => IsActive = false;
     }
 }

@@ -56,18 +56,10 @@ namespace WeaponMasterDefense
 
                 switch (gameState)
                 {
-                    case GameState.Playing:
-                        UpdatePlaying(ms / 1000.0);
-                        break;
-                    case GameState.Paused:
-                        UpdatePaused();
-                        break;
-                    case GameState.LevelUp:
-                        UpdateLevelUp();
-                        break;
-                    case GameState.GameOver:
-                        UpdateGameOver();
-                        break;
+                    case GameState.Playing:     UpdatePlaying(ms / 1000.0); break;
+                    case GameState.Paused:      UpdatePaused(); break;
+                    case GameState.LevelUp:     UpdateLevelUp(); break;
+                    case GameState.GameOver:    UpdateGameOver(); break;
                 }
             }
         }
@@ -76,7 +68,7 @@ namespace WeaponMasterDefense
         {
             Console.Title = "Weapon Master Defense";
             ConsoleWindowManager.LockConsoleSize(320, 85);
-            ConsoleFontManager.SetFontSize(4, 8, "");
+            ConsoleFontManager.SetFontSize(4, 6, "");
             Console.CursorVisible = false;
             Console.OutputEncoding = System.Text.Encoding.UTF8;
 
@@ -100,6 +92,7 @@ namespace WeaponMasterDefense
                 Console.Beep(BeepSound.E4, 50);
                 Console.Beep(BeepSound.D4, 50);
                 Console.Beep(BeepSound.C4, 50);
+                InputSystem.ClearKeyBuffer();
                 return;
             }
 
@@ -107,13 +100,14 @@ namespace WeaponMasterDefense
             if (player.Exp >= player.TargetExp)
             {
                 player.Exp = 0;
-                player.TargetExp += 10;
+                player.TargetExp += 20;
                 gameLevel++;
                 _lvUp = new LevelUpRender(player);
                 gameState = GameState.LevelUp;
                 Console.Beep(BeepSound.D4, 50);
                 Console.Beep(BeepSound.C4, 50);
                 Console.Beep(BeepSound.B4, 50);
+                InputSystem.ClearKeyBuffer();
                 return;
             }
 
@@ -140,6 +134,7 @@ namespace WeaponMasterDefense
             Console.Beep(BeepSound.G4, 50);
             isPaused = true;
             gameState = GameState.Paused;
+            InputSystem.ClearKeyBuffer();
         }
 
         static void UpdatePaused()

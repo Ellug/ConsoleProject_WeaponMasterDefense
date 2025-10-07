@@ -15,10 +15,8 @@ namespace WeaponMasterDefense
                 Console.OutputEncoding = System.Text.Encoding.UTF8;
 
                 // 창/버퍼는 한 번만 세팅
-                Console.SetWindowSize(Math.Min(width, Console.LargestWindowWidth),
-                                      Math.Min(height, Console.LargestWindowHeight));
-                Console.SetBufferSize(Math.Max(Console.WindowWidth, width),
-                                      Math.Max(Console.WindowHeight, height));
+                Console.SetWindowSize(Math.Min(width, Console.LargestWindowWidth), Math.Min(height, Console.LargestWindowHeight));
+                Console.SetBufferSize(Math.Max(Console.WindowWidth, width), Math.Max(Console.WindowHeight, height));
             }
             catch { }
 

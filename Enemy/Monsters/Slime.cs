@@ -5,10 +5,11 @@
         public Slime(int spawnX, int gameLevel)
         {
             Name = "Slime";
-            HP = 10 + (gameLevel / 2);
+            HP = 20 + (gameLevel);
             Atk = 1;
             Speed = 1;
             ExpValue = 10;
+            ScoreVal = 10;
             X = spawnX;
             Y = 0;
             Width = Frames[0][0].Length;

@@ -59,7 +59,7 @@ namespace WeaponMasterDefense
         // 점수
         private static void DrawScore(int score)
         {
-            string scoreText = score.ToString("D5");
+            string scoreText = score.ToString("D6");
 
             int charWidth = AlphabetS.GetPattern('0')[0].Length;
             int totalWidth = (charWidth + 2) * scoreText.Length;

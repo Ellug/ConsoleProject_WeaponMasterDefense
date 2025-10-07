@@ -79,7 +79,7 @@ namespace WeaponMasterDefense
         public WSkill()
         {
             Name = "Cresent Slash";
-            Damage = 1;
+            Damage = 2;
             Cooldown = 7;
         }
 
@@ -110,8 +110,8 @@ namespace WeaponMasterDefense
         {
             if (Level >= 9) return;
             Level++;
-            Damage++;
-            _spreadWidth += 4;
+            Damage += 2;
+            _spreadWidth += 1;
             Cooldown -= 0.5;
         }
     }
@@ -158,7 +158,7 @@ namespace WeaponMasterDefense
 
     public class RSkill : Skill
     {
-        double _duration = 6.0;
+        double _duration = 4.0;
 
         public RSkill()
         {

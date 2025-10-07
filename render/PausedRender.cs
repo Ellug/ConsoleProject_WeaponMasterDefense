@@ -6,15 +6,22 @@ namespace WeaponMasterDefense
     {
         public void HandleInput()
         {
-            if (!Console.KeyAvailable) return;
-
-            var key = Console.ReadKey(true).Key;
-
-            switch (key)
+            if (InputSystem.IsKeyPressed(ConsoleKey.D1))
             {
-                case ConsoleKey.Escape:     Program.ResumeGame();   break;
-                case ConsoleKey.D1:         Program.Start();        break;
-                case ConsoleKey.D2:         Program.ExitGame();     break;
+                Program.ResumeGame();
+                return;
+            }
+
+            if (InputSystem.IsKeyPressed(ConsoleKey.D2))
+            {
+                Program.Start();
+                return;
+            }
+
+            if (InputSystem.IsKeyPressed(ConsoleKey.D3))
+            {
+                Program.ExitGame();
+                return;
             }
         }
 
@@ -22,9 +29,9 @@ namespace WeaponMasterDefense
         {            
             RenderSystem.TextRender("PAUSE", 120, 5, "M", ConsoleColor.Yellow, ConsoleColor.Black);
 
-            RenderSystem.TextRender("PRESS ESC TO RESUME", 90, 25, "S", ConsoleColor.White, ConsoleColor.Black);
-            RenderSystem.TextRender("PRESS 1 TO RESTART", 90, 40, "S", ConsoleColor.White, ConsoleColor.Black);
-            RenderSystem.TextRender("PRESS 2 TO EXIT", 90, 55, "S", ConsoleColor.White, ConsoleColor.Black);
+            RenderSystem.TextRender("PRESS 1 TO RESUME", 90, 25, "S", ConsoleColor.White, ConsoleColor.Black);
+            RenderSystem.TextRender("PRESS 2 TO RESTART", 90, 40, "S", ConsoleColor.White, ConsoleColor.Black);
+            RenderSystem.TextRender("PRESS 3 TO EXIT", 90, 55, "S", ConsoleColor.White, ConsoleColor.Black);
         }
     }
 }

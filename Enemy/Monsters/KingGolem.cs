@@ -5,10 +5,11 @@
         public KingGolem(int spawnX, int gameLevel)
         {
             Name = "King Golem";
-            HP = 100000;
-            Atk = 20;
-            Speed = 2;
+            HP = 70000;
+            Atk = 10;
+            Speed = 1;
             ExpValue = 600;
+            ScoreVal = 10000;
             X = spawnX;
             Y = 0;
             Width = Frames[0][0].Length;

@@ -34,18 +34,9 @@ namespace WeaponMasterDefense
                     for (int c = 0; c < row.Length; c++)
                     {
                         char ch = row[c];
-                        if (ch == ' ')
-                        {
-                            Renderer.RB.Put(startX + c, startY + r, ' ', ConsoleColor.Gray, bg);
-                        }
-                        else if (ch == '█')
-                        {
-                            Renderer.RB.Put(startX + c, startY + r, '█', color, bg);
-                        }
-                        else
-                        {
-                            Renderer.RB.Put(startX + c, startY + r, ch, color, bg);
-                        }
+                        if      (ch == ' ') Renderer.RB.Put(startX + c, startY + r, ' ', ConsoleColor.Gray, bg);                        
+                        else if (ch == '█') Renderer.RB.Put(startX + c, startY + r, '█', color, bg);
+                        else    Renderer.RB.Put(startX + c, startY + r, ch, color, bg);
                     }
                 }
                 return;

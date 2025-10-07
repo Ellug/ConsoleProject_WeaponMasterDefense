@@ -106,8 +106,6 @@ namespace WeaponMasterDefense
             }
 
             Console.ReadKey(true);
-            Console.ResetColor();
-            Console.Clear();
             Manual();
         }
 
@@ -124,8 +122,6 @@ namespace WeaponMasterDefense
             RenderSystem.TextRender("LEVEL UP : RANDOM UPGRADE CHOICES AVAILABLE", 25, 65, "S", ConsoleColor.White, ConsoleColor.Black);
 
             Console.ReadKey(true);
-            Console.ResetColor();
-            Console.Clear();
             Ment();
         }
 
@@ -140,9 +136,6 @@ namespace WeaponMasterDefense
             RenderSystem.TextRender("GOOD LUCK", 8, 43, "S", ConsoleColor.White, ConsoleColor.Black);
 
             Console.ReadKey(true);
-            Console.ResetColor();
-            Console.Clear();
-
             return;
         }
 

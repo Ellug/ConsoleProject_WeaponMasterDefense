@@ -27,11 +27,11 @@ namespace WeaponMasterDefense
         
         public Player()
         {
-            HP = 100;
+            HP = 200;
             Atk = 3;
-            AtkDelay = 1;
+            AtkDelay = 0.6;
             Speed = 1;
-            Range = 20;
+            Range = 40;
             X = 100;
             Y = 65;
             Exp = 0;
@@ -53,6 +53,7 @@ namespace WeaponMasterDefense
 
             // 타겟 탐색 및 발사
             Monster target = FindNearestTarget(monsters);
+
             if (_isAsuraMode)
             {
                 if (target != null && _attackTimer >= 0.05)
@@ -181,7 +182,7 @@ namespace WeaponMasterDefense
 
         // level up options
         public void IncreaseAtk() => Atk += 2;
-        public void ReduceAtkDelay() => AtkDelay -= 0.2;
+        public void ReduceAtkDelay() => AtkDelay -= 0.1;
         public void IncreaseSpeed() => Speed += 1;
         public void IncreaseRange() => Range += 20;
         public void Heal() => HP += 40;

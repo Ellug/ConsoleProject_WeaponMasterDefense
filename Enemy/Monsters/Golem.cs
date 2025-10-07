@@ -5,11 +5,12 @@
         public Golem(int spawnX, int gameLevel)
         {
             Name = "Golem";
-            HP = 20 + gameLevel;
+            HP = 80 + gameLevel*2;
             Atk = 1;
             Range = 2;
             Speed = 2;
             ExpValue = 40;
+            ScoreVal = 30;
             X = spawnX;
             Y = 0;
             Width = Frames[0][0].Length;

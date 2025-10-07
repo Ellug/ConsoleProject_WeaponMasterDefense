@@ -5,10 +5,11 @@
         public KingBat(int spawnX, int gameLevel)
         {
             Name = "King Bat";
-            HP = 3000;
+            HP = 10000;
             Atk = 10;
             Speed = 4;
             ExpValue = 400;
+            ScoreVal = 5000;
             X = spawnX;
             Y = 0;
             Width = Frames[0][0].Length;
