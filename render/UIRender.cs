@@ -99,8 +99,7 @@ namespace WeaponMasterDefense
         // HP바
         private static void DrawWallHp(int wallHP)
         {
-            wallHP = Math.Max(0, Math.Min(100, wallHP));
-            double percent = wallHP / 100.0;
+            double percent = wallHP / 200.0;
 
             int barWidth = uiWidth - 4;
             int filled = (int)(barWidth * percent);

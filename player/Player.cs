@@ -28,10 +28,10 @@ namespace WeaponMasterDefense
         public Player()
         {
             HP = 200;
-            Atk = 3;
+            Atk = 4;
             AtkDelay = 0.6;
             Speed = 1;
-            Range = 40;
+            Range = 60;
             X = 100;
             Y = 65;
             Exp = 0;

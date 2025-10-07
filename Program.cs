@@ -8,6 +8,7 @@ namespace WeaponMasterDefense
     class Program
     {
         static GameState gameState;
+        static GameOverRender _gameOver;
         public static Stopwatch watch = new Stopwatch();
         static Player player;
         static public MonsterSpawner spawner;
@@ -19,18 +20,17 @@ namespace WeaponMasterDefense
 
         static void Main(string[] args)
         {
+            FirebaseManager.Initialize();
             GetIntro();
             Start();
-            while (true)
-            {
-                Update();
-            }
+            while (true) Update();
         }
 
         public static void Start()
         {
             Bgm.Stop();
             Renderer.Init(320, 85);
+            _gameOver = null;
 
             watch.Reset();
             watch.Start();
@@ -84,32 +84,9 @@ namespace WeaponMasterDefense
         {
             InputSystem.HandleInput(player);
 
-            // Game Over
-            if (player.HP <= 0)
-            {
-                gameState = GameState.GameOver;
-                Console.Beep(BeepSound.F4, 50);
-                Console.Beep(BeepSound.E4, 50);
-                Console.Beep(BeepSound.D4, 50);
-                Console.Beep(BeepSound.C4, 50);
-                InputSystem.ClearKeyBuffer();
-                return;
-            }
-
-            // Level Up
-            if (player.Exp >= player.TargetExp)
-            {
-                player.Exp = 0;
-                player.TargetExp += 20;
-                gameLevel++;
-                _lvUp = new LevelUpRender(player);
-                gameState = GameState.LevelUp;
-                Console.Beep(BeepSound.D4, 50);
-                Console.Beep(BeepSound.C4, 50);
-                Console.Beep(BeepSound.B4, 50);
-                InputSystem.ClearKeyBuffer();
-                return;
-            }
+            // Game Over & LevelUp
+            if (player.HP <= 0) SetGameOver();
+            if (player.Exp >= player.TargetExp) SetLevelUp();
 
             spawner.Update(deltatime, player, gameLevel);
             player.Update(spawner.ActiveMonsters, deltatime);
@@ -135,6 +112,32 @@ namespace WeaponMasterDefense
             isPaused = true;
             gameState = GameState.Paused;
             InputSystem.ClearKeyBuffer();
+        }
+
+        public static void SetGameOver()
+        {
+            gameState = GameState.GameOver;
+            Console.Beep(BeepSound.F4, 50);
+            Console.Beep(BeepSound.E4, 50);
+            Console.Beep(BeepSound.D4, 50);
+            Console.Beep(BeepSound.C4, 50);
+            InputSystem.ClearKeyBuffer();
+            _gameOver = new GameOverRender();
+            return;
+        }
+
+        public static void SetLevelUp()
+        {
+            player.Exp = 0;
+            player.TargetExp += 20;
+            gameLevel++;
+            _lvUp = new LevelUpRender(player);
+            gameState = GameState.LevelUp;
+            Console.Beep(BeepSound.D4, 50);
+            Console.Beep(BeepSound.C4, 50);
+            Console.Beep(BeepSound.B4, 50);
+            InputSystem.ClearKeyBuffer();
+            return;
         }
 
         static void UpdatePaused()
@@ -173,11 +176,10 @@ namespace WeaponMasterDefense
 
         static void UpdateGameOver()
         {
-            var gameOver = new GameOverRender();
             Renderer.BeginFrame(ConsoleColor.Black);
-            gameOver.DrawPauseMenu();
+            _gameOver?.DrawGameOverMenu();
             Renderer.EndFrame();
-            gameOver.HandleInput();
+            _gameOver?.HandleInput();
         }
     }
 }
