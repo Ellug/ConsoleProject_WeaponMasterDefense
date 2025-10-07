@@ -56,9 +56,10 @@
 - ConsoleFontManager.cs : 콘솔 폰트와 글자 크기를 설정하는 클래스. Karnel32.dll 의 API를 호출해 폰트 종류와 픽셀 크기를 변경할 수 있도록 함.
 - ConsoleWindowManager.cs : 콘솔 창 크기와 스타일 제어. Win32API를 통해 리사이즈 & 최대화 버튼 비활성화 및 스크롤바 제거 수행
 ## Root Directory
-- FirebaseManager.cs : 파이어베이스 실행.
+- FirebasePublicApi.cs : 파이어베이스 api.
 - Program.cs : 메인. 업데이트 담당 및 전역 함수, 전역 변수 위주.
 ---
 
 2025-10-07 : Last Updated
+
 
