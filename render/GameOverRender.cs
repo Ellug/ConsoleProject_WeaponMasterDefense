@@ -1,5 +1,4 @@
-﻿using Google.Cloud.Firestore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -22,7 +21,6 @@ namespace WeaponMasterDefense
         // 랭킹
         private List<(string Name, int Score)> _top = new List<(string, int)>();
         private bool _isTop10 = false;
-        private bool _submitted = false;
         private string _name = "";
         private const int MaxNameLen = 12;
 
@@ -36,26 +34,17 @@ namespace WeaponMasterDefense
         }
 
         // Firestore
-        private static CollectionReference RankingCol => FirebaseManager.Db.Collection("Ranking");
-
         private async Task FetchTop10()
         {
             try
             {
-                var snap = await RankingCol.OrderByDescending("Score").Limit(10).GetSnapshotAsync();
+                var list = await FirestorePublicApi.GetTop10Async();
 
                 _top.Clear();
-                foreach (var doc in snap.Documents)
-                {
-                    string name = doc.GetValue<string>("Name");
-                    int score = doc.GetValue<int>("Score");
+                foreach (var (name, score, _) in list)
                     _top.Add((name, score));
-                }
 
-                // Top10 진입 가능 여부
-                if (_top.Count < 10) _isTop10 = true;
-                else _isTop10 = Program.score > _top[_top.Count - 1].Score;
-
+                _isTop10 = _top.Count < 10 || Program.score > _top[_top.Count - 1].Score;
                 _stage = Stage.ShowRanking;
             }
             catch (Exception ex)
@@ -67,24 +56,14 @@ namespace WeaponMasterDefense
                 _stage = Stage.ShowRanking;
             }
         }
-
+        // 점수 제출 + 11등 이후 삭제 + 재조회
         private async Task Submit(string name, int score)
         {
-            // 제출
-            await RankingCol.AddAsync(new
-            {
-                Name = name,
-                Score = score,
-            });
+            await FirestorePublicApi.AddAsync(name, score);
+            await FirestorePublicApi.TrimToTop10Async();
 
-            // 꼴지 삭제
-            var all = await RankingCol.OrderByDescending("Score").GetSnapshotAsync();
-            for (int i = 10; i < all.Count; i++) await all.Documents[i].Reference.DeleteAsync();
-
-            _submitted = true;
             _lastName = name; _lastScore = score;
 
-            // 재조회
             await FetchTop10();
             _stage = Stage.ShowUpdatedRanking;
         }
@@ -201,7 +180,7 @@ namespace WeaponMasterDefense
             int rightX = 170;
             int y = 20;
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < Math.Min(5, _top.Count); i++)
             {
                 var line = $"{i + 1,2}. {_top[i].Name} :  {_top[i].Score}";
                 RenderSystem.TextRender(line, leftX, y, "S", ConsoleColor.White, ConsoleColor.Black);
@@ -240,7 +219,7 @@ namespace WeaponMasterDefense
             int rightX = 170;
             int y = 20;
 
-            for (int i = 0; i <5; i++)
+            for (int i = 0; i < Math.Min(5, _top.Count); i++)
             {
                 bool highlight = (_lastName != null && _lastScore.HasValue && _top[i].Name == _lastName && _top[i].Score == _lastScore.Value);
                 var color = highlight ? ConsoleColor.Yellow : ConsoleColor.White;

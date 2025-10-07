@@ -20,7 +20,6 @@ namespace WeaponMasterDefense
 
         static void Main(string[] args)
         {
-            FirebaseManager.Initialize();
             GetIntro();
             Start();
             while (true) Update();
