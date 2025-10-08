@@ -14,29 +14,20 @@ namespace WeaponMasterDefense
             uiWidth = totalWidth - uiStartX;
             uiHeight = totalHeight;
 
-            // UI 배경
+            // UI 배경 최초 클리어
             RenderSystem.FillRectChar(uiStartX, 0, uiWidth, uiHeight, ' ', ConsoleColor.Black);
-
-            // 고정 라벨
-            RenderSystem.TextRender("SCORE", uiStartX + 6, 2, "S", ConsoleColor.Gray, ConsoleColor.Black);
-            RenderSystem.TextRender(" Q", uiStartX + 2, 12, "S", ConsoleColor.Cyan, ConsoleColor.Black);
-            RenderSystem.TextRender(" W", uiStartX + 2, 20, "S", ConsoleColor.Cyan, ConsoleColor.Black);
-            RenderSystem.TextRender(" E", uiStartX + 2, 28, "S", ConsoleColor.Cyan, ConsoleColor.Black);
-            RenderSystem.TextRender(" R", uiStartX + 2, 36, "S", ConsoleColor.Cyan, ConsoleColor.Black);
-
-            // 초기 표시
-            DrawScore(-1);
-            DrawWallHp(200);
-            DrawExp(200, 100000);
         }
 
         public static void Update(Player player, int score = 0)
         {
+            const int skillStartY = 12;
+            const int skillLineSpace = 8;
+
             RenderSystem.TextRender("SCORE", uiStartX + 6, 2, "S", ConsoleColor.Gray, ConsoleColor.Black);
-            RenderSystem.TextRender(" Q", uiStartX + 2, 12, "S", ConsoleColor.Cyan, ConsoleColor.Black);
-            RenderSystem.TextRender(" W", uiStartX + 2, 20, "S", ConsoleColor.Cyan, ConsoleColor.Black);
-            RenderSystem.TextRender(" E", uiStartX + 2, 28, "S", ConsoleColor.Cyan, ConsoleColor.Black);
-            RenderSystem.TextRender(" R", uiStartX + 2, 36, "S", ConsoleColor.Cyan, ConsoleColor.Black);
+            RenderSystem.TextRender(" Q", uiStartX + 2, skillStartY, "S", ConsoleColor.Cyan, ConsoleColor.Black);
+            RenderSystem.TextRender(" W", uiStartX + 2, skillStartY + skillLineSpace, "S", ConsoleColor.Cyan, ConsoleColor.Black);
+            RenderSystem.TextRender(" E", uiStartX + 2, skillStartY + (skillLineSpace * 2), "S", ConsoleColor.Cyan, ConsoleColor.Black);
+            RenderSystem.TextRender(" R", uiStartX + 2, skillStartY + (skillLineSpace * 3), "S", ConsoleColor.Cyan, ConsoleColor.Black);
 
             DrawScore(score);
 
@@ -59,14 +50,12 @@ namespace WeaponMasterDefense
         // 점수
         private static void DrawScore(int score)
         {
-            string scoreText = score.ToString("D6");
+            string scoreText = score.ToString("D7");
 
             int charWidth = AlphabetS.GetPattern('0')[0].Length;
             int totalWidth = (charWidth + 2) * scoreText.Length;
             int startX = uiStartX + uiWidth - totalWidth;
 
-            // 영역 지우고 다시 그림
-            RenderSystem.FillRectChar(startX - 7, 2, totalWidth + 7, AlphabetS.GetPattern('0').Length, ' ', ConsoleColor.Black);
             RenderSystem.TextRender(scoreText, startX, 2, "S", ConsoleColor.White, ConsoleColor.Black);
         }
 
@@ -89,11 +78,13 @@ namespace WeaponMasterDefense
         // Player Stat
         private static void DrawStat(Player player)
         {
-            int statStartY = 44;
+            const int statStartY = 44;
+            const int statLineSpace = 8;
+
             RenderSystem.TextRender($"ATK : {player.Atk}", uiStartX + 8, statStartY, "S", ConsoleColor.White, ConsoleColor.Black);
-            RenderSystem.TextRender($"ATK DELAY : {player.AtkDelay}", uiStartX + 8, statStartY + 8, "S", ConsoleColor.White, ConsoleColor.Black);
-            RenderSystem.TextRender($"SPEED : {player.Speed}", uiStartX + 8, statStartY + 16, "S", ConsoleColor.White, ConsoleColor.Black);
-            RenderSystem.TextRender($"RANGE : {player.Range}", uiStartX + 8, statStartY + 24, "S", ConsoleColor.White, ConsoleColor.Black);
+            RenderSystem.TextRender($"ATK DELAY : {player.AtkDelay:0.00}", uiStartX + 8, statStartY + statLineSpace, "S", ConsoleColor.White, ConsoleColor.Black);
+            RenderSystem.TextRender($"SPEED : {player.Speed}", uiStartX + 8, statStartY + (statLineSpace * 2), "S", ConsoleColor.White, ConsoleColor.Black);
+            RenderSystem.TextRender($"RANGE : {player.Range}", uiStartX + 8, statStartY + (statLineSpace * 3), "S", ConsoleColor.White, ConsoleColor.Black);
         }
 
         // HP바

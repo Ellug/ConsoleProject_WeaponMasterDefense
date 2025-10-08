@@ -57,7 +57,7 @@ namespace WeaponMasterDefense
         }
 
         // 점수 추가
-        public static async Task AddAsync(string name, int score)
+        public static async Task AddToDoc(string name, int score)
         {
             var url = $"{BaseUrl}/documents/Ranking";
             var body = new
@@ -73,7 +73,7 @@ namespace WeaponMasterDefense
         }
 
         // TOP10만 남기고 나머지 삭제
-        public static async Task TrimToTop10Async()
+        public static async Task DeleteOutRank()
         {
             // 점수 내림차순으로 전체 가져온 다음 11등 이후 삭제
             var url = $"{BaseUrl}/documents:runQuery";

@@ -119,7 +119,7 @@ namespace WeaponMasterDefense
         public void Attack(Monster target)
         {
             var bullet = _bulletPool.Get();
-            bullet.Init(X, Y, target, Atk, 80.0);
+            bullet.Init(X, Y, target, Atk, 120.0);
             _activeBullets.Add(bullet);
         }
 
@@ -129,10 +129,9 @@ namespace WeaponMasterDefense
             {
                 _asuraRemain -= deltaTime;
                 if (_asuraRemain <= 0) EndAsura();
-                for (int i = 0; i < 3; i++)
-                {
-                    skills[i]?.UpdateCooldown(100000);
-                }
+
+                // q w e 스킬 쿨타임 감소
+                for (int i = 0; i < 3; i++) skills[i]?.UpdateCooldown(100000);
             }
             else foreach (var skill in skills) skill?.UpdateCooldown(deltaTime);
         }
@@ -166,17 +165,31 @@ namespace WeaponMasterDefense
             else RenderSystem.DrawPattern(Sprite, X, Y, ConsoleColor.Green);
         }
 
-        public void MoveUp() { int ny = Y - Speed; Y = (ny < 0 ? 0 : ny); }
-        public void MoveLeft() { int nx = X - Speed; X = (nx < 0 ? 0 : nx); }
+        // Move 4dir
+        public void MoveUp()
+        {
+            int ny = Y - Speed;
+            Y = (ny < 0 ? 0 : ny);
+        }
+
+        public void MoveLeft()
+        {
+            int nx = X - Speed;
+            X = (nx < 0 ? 0 : nx);
+        }
+
         public void MoveDown()
         {
             int maxY = FieldRender.GameHeight - FieldRender.wallHeight - Height;
-            int ny = Y + Speed; Y = (ny > maxY ? maxY : ny);
+            int ny = Y + Speed;
+            Y = (ny > maxY ? maxY : ny);
         }
+
         public void MoveRight()
         {
             int maxX = FieldRender.GameWidth - Width - 1;
-            int nx = X + Speed; X = (nx > maxX ? maxX : nx);
+            int nx = X + Speed;
+            X = (nx > maxX ? maxX : nx);
         }
 
 

@@ -13,7 +13,7 @@ namespace WeaponMasterDefense
         }
 
         // 텍스트 패턴 렌더
-        public static void TextRender(string text, int startX, int startY, string fontType = "M", ConsoleColor color = ConsoleColor.Blue, ConsoleColor bg = ConsoleColor.Black)
+        public static void TextRender(string text, int startX, int startY, string fontType = "S", ConsoleColor color = ConsoleColor.Blue, ConsoleColor bg = ConsoleColor.Black)
         {
             foreach (char c in text.ToUpper())
             {

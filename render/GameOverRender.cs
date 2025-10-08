@@ -24,17 +24,23 @@ namespace WeaponMasterDefense
         private string _name = "";
         private const int MaxNameLen = 12;
 
+        // 랭킹 좌표 상수
+        private const int leftRank = 10;
+        private const int rightRank = 170;
+        private const int startYRank = 20;
+        private const int lineSpaceRank = 8;
+
         // 제출 후 내 항목 하이라이트용
         private string _lastName = null;
         private int? _lastScore = null;
 
         public GameOverRender()
         {
-            _ = FetchTop10(); // 진입 즉시 로딩 시작
+            _ = FetchRanking(); // 진입 즉시 로딩 시작
         }
 
-        // Firestore
-        private async Task FetchTop10()
+        // Firestore fetch
+        private async Task FetchRanking()
         {
             try
             {
@@ -59,12 +65,13 @@ namespace WeaponMasterDefense
         // 점수 제출 + 11등 이후 삭제 + 재조회
         private async Task Submit(string name, int score)
         {
-            await FirestorePublicApi.AddAsync(name, score);
-            await FirestorePublicApi.TrimToTop10Async();
+            await FirestorePublicApi.AddToDoc(name, score);
+            await FirestorePublicApi.DeleteOutRank();
 
-            _lastName = name; _lastScore = score;
+            _lastName = name;
+            _lastScore = score;
 
-            await FetchTop10();
+            await FetchRanking();
             _stage = Stage.ShowUpdatedRanking;
         }
 
@@ -151,6 +158,7 @@ namespace WeaponMasterDefense
             return false;
         }
 
+        // 렌더링
         public void DrawGameOverMenu()
         {
             switch (_stage)
@@ -176,23 +184,21 @@ namespace WeaponMasterDefense
         {
             RenderSystem.TextRender("TOP 10 RANKING", 100, 4, "M", ConsoleColor.Red, ConsoleColor.Black);
 
-            int leftX = 10;
-            int rightX = 170;
-            int y = 20;
+            int y = startYRank;
 
             for (int i = 0; i < Math.Min(5, _top.Count); i++)
             {
                 var line = $"{i + 1,2}. {_top[i].Name} :  {_top[i].Score}";
-                RenderSystem.TextRender(line, leftX, y, "S", ConsoleColor.White, ConsoleColor.Black);
-                y += 8;
+                RenderSystem.TextRender(line, leftRank, y, "S", ConsoleColor.White, ConsoleColor.Black);
+                y += lineSpaceRank;
             }
 
-            y = 18;
+            y = startYRank + 2;
             for (int i = 5; i < _top.Count; i++)
             {
                 var line = $"{i + 1,2}. {_top[i].Name} :  {_top[i].Score}";
-                RenderSystem.TextRender(line, rightX, y, "S", ConsoleColor.White, ConsoleColor.Black);
-                y += 8;
+                RenderSystem.TextRender(line, rightRank, y, "S", ConsoleColor.White, ConsoleColor.Black);
+                y += lineSpaceRank;
             }
 
             RenderSystem.TextRender("PRESS ENTER OR SPACEBAR TO CONTINUE", 50, 70, "S", ConsoleColor.Gray, ConsoleColor.Black);
@@ -200,7 +206,7 @@ namespace WeaponMasterDefense
 
         private void DrawNameEntry()
         {
-            RenderSystem.TextRender("CONGRATULATIONS! YOU ARE IN TOP 10.", 40, 25, "S", ConsoleColor.Yellow, ConsoleColor.Black);
+            RenderSystem.TextRender("Congraturation. You Are In Top 10", 50, 4, "S", ConsoleColor.Red, ConsoleColor.Black);
             RenderSystem.TextRender("ENTER YOUR NAME ENG AND PRESS ENTER:", 40, 33, "S", ConsoleColor.White,  ConsoleColor.Black);
             RenderSystem.TextRender($"> {_name}", 40, 40, "S", ConsoleColor.Cyan,   ConsoleColor.Black);
             RenderSystem.TextRender("BACKSPACE to edit. ENTER to submit", 40, 65, "S", ConsoleColor.DarkGray, ConsoleColor.Black);
@@ -213,29 +219,27 @@ namespace WeaponMasterDefense
 
         private void DrawUpdatedRanking()
         {
-            RenderSystem.TextRender("TOP 10 RANKING", 100, 4, "M", ConsoleColor.Red, ConsoleColor.Black);
+            RenderSystem.TextRender("Congraturation. You Are In Top 10", 50, 4, "S", ConsoleColor.Red, ConsoleColor.Black);
 
-            int leftX = 10;
-            int rightX = 170;
-            int y = 20;
+            int y = startYRank;
 
             for (int i = 0; i < Math.Min(5, _top.Count); i++)
             {
                 bool highlight = (_lastName != null && _lastScore.HasValue && _top[i].Name == _lastName && _top[i].Score == _lastScore.Value);
                 var color = highlight ? ConsoleColor.Yellow : ConsoleColor.White;
                 var line = $"{i + 1,2}. {_top[i].Name} :  {_top[i].Score}";
-                RenderSystem.TextRender(line, leftX, y, "S", color, ConsoleColor.Black);
-                y += 8;
+                RenderSystem.TextRender(line, leftRank, y, "S", color, ConsoleColor.Black);
+                y += lineSpaceRank;
             }
 
-            y = 18;
+            y = startYRank + 2;
             for (int i = 5; i < _top.Count; i++)
             {
                 bool highlight = (_lastName != null && _lastScore.HasValue && _top[i].Name == _lastName && _top[i].Score == _lastScore.Value);
                 var color = highlight ? ConsoleColor.Yellow : ConsoleColor.White;
                 var line = $"{i + 1,2}. {_top[i].Name} :  {_top[i].Score}";
-                RenderSystem.TextRender(line, rightX, y, "S", color, ConsoleColor.Black);
-                y += 8;
+                RenderSystem.TextRender(line, rightRank, y, "S", color, ConsoleColor.Black);
+                y += lineSpaceRank;
             }
 
             RenderSystem.TextRender("PRESS ENTER OR SPACEBAR TO CONTINUE", 50, 70, "S", ConsoleColor.Gray, ConsoleColor.Black);

@@ -17,7 +17,7 @@ namespace WeaponMasterDefense
                 {
                     var notes = new (int freq, int dur)[]
                     {
-                        // 1절
+                        // 1
                         (BeepSound.E3, 200),
                         (BeepSound.G3, 200),
                         (BeepSound.A3, 200),
@@ -28,7 +28,7 @@ namespace WeaponMasterDefense
                         (BeepSound.B3, 200),
                         (BeepSound.A3, 400),
 
-                        // 2절 (변형)
+                        // 2
                         (BeepSound.A3, 200),
                         (BeepSound.B3, 200),
                         (BeepSound.C4, 200),
@@ -39,7 +39,7 @@ namespace WeaponMasterDefense
                         (BeepSound.A3, 200),
                         (BeepSound.G3, 400),
 
-                        // 3절 (고조)
+                        // 3
                         (BeepSound.E3, 200),
                         (BeepSound.G3, 200),
                         (BeepSound.B3, 200),
@@ -50,7 +50,7 @@ namespace WeaponMasterDefense
                         (BeepSound.D4, 200),
                         (BeepSound.C4, 400),
 
-                        // 4절 (마무리)
+                        // 4
                         (BeepSound.D4, 200),
                         (BeepSound.C4, 200),
                         (BeepSound.B3, 200),
@@ -71,9 +71,6 @@ namespace WeaponMasterDefense
             }).Start();
         }
 
-        public static void Stop()
-        {
-            playing = false;
-        }
+        public static void Stop() => playing = false;
     }
 }

@@ -10,14 +10,14 @@ namespace WeaponMasterDefense
         public double Cooldown { get; protected set; } = 1;
         public double CurrentCooldown { get; protected set; } = 0;
         public bool IsReady => CurrentCooldown <= 0;
-        protected double sDt { get; private set; }
+        protected double SkillDt { get; private set; }
 
         public abstract void Activate(Player player);
         public abstract void LevelUp();
 
         public void UpdateCooldown(double deltaTime)
         {
-            sDt = deltaTime;
+            SkillDt = deltaTime;
 
             if (CurrentCooldown > 0)
             {
@@ -27,6 +27,7 @@ namespace WeaponMasterDefense
         }
     }
 
+    // Q Skill : Nova
     public class QSkill : Skill
     {
         private int _bulletCount;
@@ -49,7 +50,7 @@ namespace WeaponMasterDefense
 
             // 사방으로 방사형 발사
             double angleStep = 2 * Math.PI / _bulletCount;
-            double speed = 70.0;
+            double speed = 90.0;
 
             for (int i = 0; i < _bulletCount; i++)
             {
@@ -72,6 +73,7 @@ namespace WeaponMasterDefense
         }
     }
 
+    // W Skill : Cresent Slash
     public class WSkill : Skill
     {
         private int _spreadWidth = 12;
@@ -88,10 +90,7 @@ namespace WeaponMasterDefense
             if (CurrentCooldown > 0) return;
             CurrentCooldown = Cooldown;
 
-            int half = _spreadWidth;
-            int baseY = player.Y - 1;
             double speed = 120.0;
-            double R = half + 4;
             int originY = player.Y + 2;
 
             for (int x = -_spreadWidth; x <= _spreadWidth; x++)
@@ -116,6 +115,7 @@ namespace WeaponMasterDefense
         }
     }
 
+    // E Skill : Archers Fire
     public class ESkill : Skill
     {
         public ESkill()
@@ -156,6 +156,7 @@ namespace WeaponMasterDefense
         }
     }
 
+    // R Skill : Asura Mode
     public class RSkill : Skill
     {
         double _duration = 4.0;

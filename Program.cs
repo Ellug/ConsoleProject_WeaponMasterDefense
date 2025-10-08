@@ -20,6 +20,12 @@ namespace WeaponMasterDefense
 
         static void Main(string[] args)
         {
+            Console.Title = "Weapon Master Defense";
+            ConsoleWindowManager.LockConsoleSize(320, 85);
+            ConsoleFontManager.SetFontSize(4, 6, "");
+            Console.CursorVisible = false;
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+
             GetIntro();
             Start();
             while (true) Update();
@@ -65,12 +71,6 @@ namespace WeaponMasterDefense
 
         static void GetIntro()
         {
-            Console.Title = "Weapon Master Defense";
-            ConsoleWindowManager.LockConsoleSize(320, 85);
-            ConsoleFontManager.SetFontSize(4, 6, "");
-            Console.CursorVisible = false;
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
-
             // bgm 재생
             Bgm.PlayBattleTheme();            
 
@@ -90,7 +90,7 @@ namespace WeaponMasterDefense
             spawner.Update(deltatime, player, gameLevel);
             player.Update(spawner.ActiveMonsters, deltatime);
 
-            // Frame
+            // Frame Render
             Renderer.BeginFrame(ConsoleColor.Black);
             FieldRender.Draw();
 

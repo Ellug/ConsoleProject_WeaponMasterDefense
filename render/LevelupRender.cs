@@ -63,7 +63,7 @@ namespace WeaponMasterDefense
             for (int i = 0; i < _options.Count; i++)
             {
                 string line = $"{i + 1} : {_options[i].label}";
-                RenderSystem.TextRender(line, 8, y, "S", ConsoleColor.White, ConsoleColor.Black);
+                RenderSystem.TextRender(line, 12, y, "S", ConsoleColor.White, ConsoleColor.Black);
                 y += 10;
             }
         }
