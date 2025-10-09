@@ -17,7 +17,7 @@ namespace WeaponMasterDefense
             {
                 case MonsterTags.Slime:         return new Slime(spawnX, gameLevel);
                 case MonsterTags.Bat:           return new Bat(spawnX, gameLevel);
-                case MonsterTags.Golem:         return new Golem(spawnX / 4 * 3, gameLevel);
+                case MonsterTags.Golem:         return new Golem(spawnX, gameLevel);
 
                 case MonsterTags.KingSlime:     return new KingSlime(spawnX, gameLevel);
                 case MonsterTags.KingBat:       return new KingBat(spawnX, gameLevel);

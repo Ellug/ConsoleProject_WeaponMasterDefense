@@ -28,8 +28,8 @@ namespace WeaponMasterDefense
         {
             if (_spawnLevel != gameLevel)
             {
-                _spawnDelay = 3.0 - (gameLevel * 0.05);
-                _spawnCount = 2 + (gameLevel / 10);
+                _spawnDelay = 3.0 - (gameLevel * 0.03);
+                _spawnCount = 2 + (gameLevel / 5);
                 _spawnLevel = gameLevel;
                 
                 TrySpawnBoss(gameLevel);
