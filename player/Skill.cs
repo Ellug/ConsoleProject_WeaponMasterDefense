@@ -73,14 +73,14 @@ namespace WeaponMasterDefense
         }
     }
 
-    // W Skill : Cresent Slash
+    // W Skill : Crescent Slash
     public class WSkill : Skill
     {
         private int _spreadWidth = 12;
 
         public WSkill()
         {
-            Name = "Cresent Slash";
+            Name = "Crescent Slash";
             Damage = 2;
             Cooldown = 7;
         }

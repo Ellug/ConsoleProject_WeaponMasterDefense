@@ -11,9 +11,9 @@ namespace WeaponMasterDefense
         static GameOverRender _gameOver;
         public static Stopwatch watch = new Stopwatch();
         static Player player;
-        static public MonsterSpawner spawner;
-        static public int score = 0;
-        static public int gameLevel = 0;
+        public static MonsterSpawner spawner;
+        public static int score = 0;
+        public static int gameLevel = 0;
 
         static LevelUpRender _lvUp;
         static public bool isPaused = false;
@@ -147,7 +147,7 @@ namespace WeaponMasterDefense
             Renderer.EndFrame();
             pausedRender.HandleInput();
         }
-        static public void ResumeGame()
+        public static void ResumeGame()
         {
             Console.Beep(BeepSound.F4, 50);
             Console.Beep(BeepSound.E4, 50);
@@ -157,7 +157,7 @@ namespace WeaponMasterDefense
             gameState = GameState.Playing;
         }
 
-        static public void ExitGame()
+        public static void ExitGame()
         {
             Console.Beep(BeepSound.D4, 50);
             Console.Beep(BeepSound.C4, 50);

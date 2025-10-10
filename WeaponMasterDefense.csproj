@@ -147,7 +147,7 @@
     <Compile Include="Enemy\Monsters\KingBat.cs" />
     <Compile Include="Enemy\Monsters\KingSlime.cs" />
     <Compile Include="Enemy\Monsters\Slime.cs" />
-    <Compile Include="FirestorePublicApi.cs" />
+    <Compile Include="Utils\FirestorePublicApi.cs" />
     <Compile Include="Player\Bullet.cs" />
     <Compile Include="Player\BulletPool.cs" />
     <Compile Include="Player\Skill.cs" />
